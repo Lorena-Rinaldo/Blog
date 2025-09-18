@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog</title>
+
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <img src="../static/img/logo.png" alt="Logo do Blog">
+            <h1>Meu Blog</h1>
+        </div>
+    </header>
+
+    <main>
+        <!-- Jimja2 -> código instalado com o flask para implantar comandos back-end dentro do HTML -->
+        {% block conteudo %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>Meu Blog - Feito com Flask</p>
+    </footer>
+</body>
+
+</html>

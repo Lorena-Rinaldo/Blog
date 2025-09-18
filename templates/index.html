@@ -1,0 +1,48 @@
+<!-- extends chama o arquivo -->
+{% extends 'base.html' %}
+{% block conteudo %}
+
+<div class="inicio">
+    <div class="col-esquerda">
+
+    </div>
+
+    <div class="feed">
+        <!-- A linha abaixo repetirá a div post pela quantidade de postagens -->
+        {% for post in postagens %}
+        <div class="post">
+            <div class="post-header">
+                <div class="user">
+                    <div>
+                        <h2>Foto</h2>
+                    </div>
+                    <div>
+                        <h2>{{ post.usuario }} disse:</h2>
+                        <p> {{ post.data }} </p>
+                    </div>
+                </div>
+
+                <div class="config_post">
+                    <div>
+                        <h2>Editar</h2>
+                    </div>
+                    <div>
+                        <h2>Excluir</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="post-content">
+                <h2>{{ post.titulo }}</h2>
+                <p>{{ post.conteudo }}</p>
+                <img src="../static/img/" alt="">
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="col-direita">
+
+    </div>
+</div>
+
+{% endblock %}

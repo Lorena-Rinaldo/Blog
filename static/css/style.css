@@ -1,0 +1,123 @@
+/*DOC CSS PROJETO BLOG*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: 0;
+}
+
+html{
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    height: 15vh;
+    background-color: rgb(245, 38, 38);
+    color: #efefef;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+header>.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 100px;
+}
+
+header>.logo img {
+    width: 80px;
+}
+
+main {
+    flex: 1;
+    height: 80vh;
+    min-height: 80vh;
+}
+
+
+.inicio {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+}
+
+.col-esquerda {
+    width: 25%;
+    min-height: 80vh;
+    background-color: grey;
+}
+
+.feed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    height: 80vh;
+    width: 50%;
+    background-color: azure;
+    padding: 2%;
+}
+
+.post {
+    width: 96%;
+    height: 200px;
+    background-color: aqua;
+    border-radius: 10px;
+    border: 2px solid #000;
+    margin-bottom: 10px;
+}
+
+.post-header {
+    display: flex;
+    flex-direction: row;
+    padding-left: 5%;
+    padding-right: 5%;
+    gap: 10px;
+    justify-content: space-between;
+    border-bottom: 2px solid #000;
+}
+
+.user {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.config_post {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.post-content {
+    padding: 10px;
+}
+
+.col-direita,
+.col-esquerda {
+    width: 25%;
+    min-height: 80vh;
+    background-color: grey;
+}
+
+footer {
+    height: 10vh;
+    background-color: rgb(245, 38, 38);
+    color: #efefef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
