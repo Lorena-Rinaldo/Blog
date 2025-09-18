@@ -4,10 +4,10 @@ USE blog_lorena;
 
 CREATE TABLE usuario(
     idUsuario INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(50) NOT NULL,
+    nomeUsuario VARCHAR(50) NOT NULL,
     user VARCHAR(15) NOT NULL UNIQUE,
     senha VARCHAR(60) NOT NULL,
-    foto VARCHAR(100),
+    fotoUsuario VARCHAR(100),
     dataCadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
