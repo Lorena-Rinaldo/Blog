@@ -19,7 +19,7 @@ def listar_post():
     try:
         with conectar() as conexao:
             cursor = conexao.cursor(dictionary = True)
-            cursor.execute("SELECT * FROM post")
+            cursor.execute("SELECT * FROM post ORDER BY idPost DESC")
             return cursor.fetchall()
     except mysql.connector.Error as erro:
         print(f"Erro de BD! \n Erro: {erro}")

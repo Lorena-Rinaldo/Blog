@@ -2,6 +2,15 @@
 {% extends 'base.html' %}
 {% block conteudo %}
 
+<!-- O with msg pegará a primeira mensagem do servidor e vai deixar ali, depois perguntará se tem mensagem e a enviará(caso tenha) -->
+{% with msg = get_flashed_messages()|first %}
+{% if msg %}
+<script>
+    alert('{{msg}}')
+</script>
+{% endif %}
+{% endwith %}
+
 <div class="inicio">
     <div class="col-esquerda">
 
@@ -28,22 +37,21 @@
             <div class="post">
                 <div class="post-header">
                     <div class="user">
-                        <div>
-                            <h2>Foto</h2>
+                        <div class="user_photo">
+                            <img src="../static/img/user.png" alt="">
                         </div>
                         <div>
-                            <h2>{{ post.usuario }} disse:</h2>
-                            <p> {{ post.data }} </p>
+                            <h2>{{ post.nomeUsuario }} disse:</h2>
+                            <p> {{ post.dataPost.strftime('%d/%m/%Y') }} </p>
                         </div>
                     </div>
 
                     <div class="config_post">
                         <div>
-                            <h2>Editar</h2>
+                            <h3><i class="fa-solid fa-ellipsis"></i></h3>
                         </div>
-                        <div>
-                            <h2>Excluir</h2>
-                        </div>
+                        <!-- <h3><i class="fa-solid fa-pencil"></i> Editar</h3> -->
+                        <!-- <h3><i class="fa-solid fa-trash"></i> Excluir</h3> -->
                     </div>
                 </div>
                 <div class="post-content">
