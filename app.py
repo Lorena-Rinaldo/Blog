@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, flash
-from database import listar_post, adicionar_post, conectar
+from database import listar_post, adicionar_post, conectar, buscar_post_por_id
 
 import mysql.connector
 
@@ -9,10 +9,21 @@ app = Flask(__name__)
 app.secret_key = "blog"  # Chave secreta -> quando precisamos passar informações de forma oculta para o navegador, precisamos do secret_key -> usado no login e senha também
 
 
+def truncar_conteudo(texto, limite=200):
+    # Corta o texto e adiciona '...' se ele exceder o limite.
+    if len(texto) > limite:
+        return texto[:limite] + "..."
+    return texto
+
+
 # Rota Página Inicial
 @app.route("/")
 def index():
     postagens = listar_post()
+
+    for post in postagens:
+        post["conteudo_resumo"] = truncar_conteudo(post["conteudo"], limite=200)
+
     return render_template(
         "index.html", postagens=postagens
     )  # O template lida com informações
@@ -89,6 +100,20 @@ def excluirpost(idPost):
         print(f"Erro de BD! \n Erro: {erro}")
         flash("Ops! Tente mais tarde!")
         redirect("/")
+
+
+@app.route("/post/<int:idPost>")
+def exibir_post(idPost):
+    # O parâmetro agora é idPost, alinhado com o nome da rota.
+    post = buscar_post_por_id(idPost)
+
+    # Nota: Não é necessário truncar aqui, pois você está exibindo o post completo.
+    # O conteúdo completo é passado para o template post.html
+    if post:
+        return render_template("post.html", post=post)
+    else:
+        flash("Post não encontrado!")
+        return redirect("/")
 
 
 #  ---Final do Arquivo---

@@ -1,0 +1,13 @@
+.curtidas i {
+    color: inherit;
+    cursor: pointer;
+    transition: color 0.2s ease; 
+}
+
+.curtido {
+    color: red;
+}
+
+.fas.curtido {
+    color: red;
+}

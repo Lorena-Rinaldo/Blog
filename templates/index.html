@@ -42,10 +42,10 @@
                 <div class="post-header">
                     <div class="user">
                         <div class="user_photo">
-                            <img src="../static/img/user.png" alt="">
+                            <img src="../static/uploads/{{post.fotoUsuario}}" alt="">
                         </div>
                         <div>
-                            <h2>{{ post.nomeUsuario }} disse:</h2>
+                            <h2>{{ post.user }} disse:</h2>
                             <p> {{ post.dataPost.strftime('%d/%m/%Y') }} </p>
                         </div>
                     </div>
@@ -63,10 +63,27 @@
                         </h3>
                     </div>
                 </div>
+                {% set limite_char = 150 %}
                 <div class="post-content">
                     <h2>{{ post.titulo }}</h2>
-                    <p>{{ post.conteudo }}</p>
-                    <img src="../static/img/" alt="">
+
+                    {% if post.conteudo | length > limite_char %}
+                    {{ post.conteudo | truncate(limite_char, killwords=False, end='') }}
+                    <a href="{{ url_for('exibir_post', idPost=post.idPost) }}">...Leia Mais</a>
+                    {% else %}
+                    {{ post.conteudo }}
+                    {% endif %}
+                </div>
+                <div class="post-interacao">
+                    <hr>
+                    <div class="content-interacao">
+                        <div class="curtidas" onclick="alternarCurtida()">
+                            <i id="icone-curtir" class="far fa-heart"></i> Amei
+                        </div>
+                        <div class="comentarios">
+                            <i class="far fa-comment"></i> Comentar
+                        </div>
+                    </div>
                 </div>
             </div>
             {% endfor %}

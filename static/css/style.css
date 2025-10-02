@@ -60,14 +60,14 @@ header {
         display: flex;
         margin: 4em;
 
-        a{
+        a {
             color: white;
             padding: 0.7em;
             border: 2px solid white;
             border-radius: 10px;
             text-decoration: none;
 
-            &:hover{
+            &:hover {
                 background-color: white;
                 color: var(--cor-principal);
             }
@@ -91,19 +91,13 @@ main {
     flex-direction: row;
 }
 
-.col-esquerda {
-    width: 25%;
-    min-height: 80vh;
-    background-color: var(--cor-fundo);
-}
-
 .col-centro {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     min-height: 80vh;
-    width: 50%;
+    width: 60%;
     background-color: var(--cor-fundo);
     border: 3px solid var(--cor-borda);
     padding: 2%;
@@ -227,6 +221,7 @@ main {
 
         img {
             height: 3em;
+            border-radius: 100%;
         }
     }
 }
@@ -277,14 +272,47 @@ main {
 
 
 .post-content {
+    height: 55%;
     padding: 5px;
     padding-left: 27px;
     padding-right: 27px;
+
+    a {
+        font-size: 13px;
+        text-decoration: none;
+        color: var(--cor-secundaria);
+    }
+}
+
+.post-interacao {
+    display: flex;
+    flex-direction: column;
+
+    hr {
+        width: 100%;
+        border: 0;
+        height: 2px;
+        background-color: var(--cor-borda);
+    }
+
+    .content-interacao {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        margin: 0.5em;
+        margin-left: 2em;
+
+        .curtidas,
+        .comentarios {
+            width: 20%;
+            cursor: pointer;
+        }
+    }
 }
 
 .col-direita,
 .col-esquerda {
-    width: 25%;
+    width: 20%;
     min-height: 80vh;
     background-color: var(--cor-fundo);
 }
