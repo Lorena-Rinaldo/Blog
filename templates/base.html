@@ -7,7 +7,13 @@
     <title>Blog</title>
 
     <link rel="stylesheet" href="../static/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../static/css/flashmessage.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="../static/js/flashmessages.js"></script>
+    <script src="../static/js/postconfig.js"></script>
 </head>
 
 <body>
@@ -19,13 +25,15 @@
     </header>
 
     <main>
-        <!-- Jimja2 -> código instalado com o flask para implantar comandos back-end dentro do HTML -->
+        <!-- Jinja2 -> código instalado com o flask para implantar comandos back-end dentro do HTML -->
         {% block conteudo %}{% endblock %}
     </main>
 
     <footer>
         <p>Meu Blog - Feito com Flask</p>
     </footer>
+
+    {% block scripts %}{% endblock %}
 </body>
 
 </html>

@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, flash
-from database import listar_post, adicionar_post
+from database import listar_post, adicionar_post, conectar
+
+import mysql.connector
 
 # Informa o tipo do app
 app = Flask(__name__)
@@ -17,8 +19,6 @@ def index():
 
 
 # Rota do form de postagem
-
-
 @app.route("/novopost", methods=["GET", "POST"])
 def novopost():
     if request.method == "GET":
@@ -37,6 +37,58 @@ def novopost():
 
         # Encaminhar para a rota da página iniciaç
         return redirect("/")
+
+
+# Rota para Editar posts
+@app.route("/editarpost/<int:idPost>", methods=["GET", "POST"])
+def editarpost(idPost):
+    if request.method == "GET":
+        try:
+            with conectar() as conexao:
+                cursor = conexao.cursor(dictionary=True)
+                cursor.execute(f"SELECT * FROM post WHERE idPost = {idPost}")
+                post = cursor.fetchone()
+                postagens = listar_post()
+                return render_template("index.html", postagens=postagens, post=post)
+        except mysql.connector.Error as erro:
+            print(f"Erro de BD! \n Erro: {erro}")
+            flash("Houve um erro! Tente mais tarde!")
+            return redirect("/")
+
+    if request.method == "POST":
+        # Pegando informações do formulário
+        titulo = request.form["titulo"]
+        conteudo = request.form["conteudo"]
+        try:
+            with conectar() as conexao:
+                cursor = conexao.cursor()
+                # O trecho '(%s, %s, %s)' significa injeção de SQL
+                sql = "UPDATE post SET titulo=%s,conteudo=%s WHERE idPost = %s"
+                cursor.execute(sql, (titulo, conteudo, idPost))
+                conexao.commit()
+                return redirect("/")
+        except mysql.connector.Error as erro:
+            print(f"Erro de BD! \n Erro: {erro}")
+            flash("Ops! Tente mais tarde!")
+            redirect("/")
+
+
+# Rota para Excluir Post
+@app.route("/excluirpost/<int:idPost>")
+def excluirpost(idPost):
+    try:
+        with conectar() as conexao:
+            cursor = conexao.cursor()
+            # O trecho '(%s, %s, %s)' significa injeção de SQL
+            sql = "DELETE FROM post WHERE idPost = %s"
+            cursor.execute(sql, (idPost,))
+            conexao.commit()
+            flash("Post Excluído!")
+            return redirect("/")
+    except mysql.connector.Error as erro:
+        print(f"Erro de BD! \n Erro: {erro}")
+        flash("Ops! Tente mais tarde!")
+        redirect("/")
 
 
 #  ---Final do Arquivo---

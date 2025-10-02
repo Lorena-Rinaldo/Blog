@@ -5,9 +5,10 @@
 <!-- O with msg pegará a primeira mensagem do servidor e vai deixar ali, depois perguntará se tem mensagem e a enviará(caso tenha) -->
 {% with msg = get_flashed_messages()|first %}
 {% if msg %}
-<script>
-    alert('{{msg}}')
-</script>
+<div id="flashPopup" class="flash-message">
+    {{ msg }}
+</div>
+
 {% endif %}
 {% endwith %}
 
@@ -18,10 +19,13 @@
 
     <div class="col-centro">
         <div class="form-post">
-            <form action="/novopost" method="post">
-                <input type="text" name="titulo" placeholder="Título da Postagem" required>
-                <textarea name="conteudo" placeholder="Escreva aqui..." required></textarea>
-                <button type="submit">Postar</button>
+            <!-- Se estiver no modo de edição, concatena a rota com o post.idPost e converte em string -->
+            <form action="{{ '/editarpost/' + post.idPost|string if post else 'novopost' }}" method="post">
+                <input type="text" name="titulo" placeholder="Título da Postagem"
+                    value="{{ post.titulo if post else '' }}" required>
+                <textarea name="conteudo" placeholder="Escreva aqui..."
+                    required>{{ post.conteudo if post else '' }}</textarea>
+                <button type="submit">{{'Salvar' if post else 'Postar'}}</button>
             </form>
         </div>
         <div class="feed">
@@ -46,12 +50,17 @@
                         </div>
                     </div>
 
-                    <div class="config_post">
-                        <div>
-                            <h3><i class="fa-solid fa-ellipsis"></i></h3>
+                    <div class="post-button">
+                        <div class="opcoes-menu" id="menuOptions-{{post.idPost}}">
+                            <a href="/editarpost/{{post.idPost}}">
+                                <h3><i class="fa-solid fa-pencil"></i> Editar</h3>
+                            </a>
+                            <a href="/excluirpost/{{post.idPost}}">
+                                <h3><i class="fa-solid fa-trash"></i> Excluir</h3>
+                            </a>
                         </div>
-                        <!-- <h3><i class="fa-solid fa-pencil"></i> Editar</h3> -->
-                        <!-- <h3><i class="fa-solid fa-trash"></i> Excluir</h3> -->
+                        <h3 class="ellipsis-icon" id="ellipsisIcon-{{post.idPost}}"><i class="fa-solid fa-ellipsis"></i>
+                        </h3>
                     </div>
                 </div>
                 <div class="post-content">
