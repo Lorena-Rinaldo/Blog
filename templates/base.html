@@ -10,27 +10,46 @@
     <link rel="stylesheet" href="../static/css/flashmessage.css">
     <link rel="stylesheet" href="../static/css/curtidas.css">
 
+    <!-- Ícones da Font Awesome para o botão de tema e outros -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+        xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMD/CDQz6ESV6/P79qDydo5YjWkK9p5/T6Bw3t/35p3D6uK1OQ2h8t2a/l3i6GqQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <script src="../static/js/flashmessages.js"></script>
-    <script src="../static/js/postconfig.js"></script>
-    <script src="../static/js/curtidas.js"></script>
+    <script src="../static/js/theme.js" defer></script>
+    <script src="../static/js/flashmessages.js" defer></script>
+    <script src="../static/js/postconfig.js" defer></script>
+    <script src="../static/js/curtidas.js" defer></script>
 </head>
 
 <body>
     <header>
+        <!-- COLUNA ESQUERDA: Navegação e Toggle de Tema -->
+        <div class="header-esquerda">
+            <div class="nav">
+                <a href="/"></a>
+            </div>
+            <div class="nav">
+                <a href="/perfil"></a>
+            </div>
+        </div>
+
+        <!-- LOGO (CENTRO) -->
         <div class="logo">
             <img src="" alt="Logo do Blog">
             <h1>Meu Blog</h1>
         </div>
-        <div class="nav">
-            <a href="/">Entrar</a>
+
+        <div class="header-direita">
+            <div class="nav">
+                <a href="/login">Login</a>
+            </div>
+                        <button id="theme-toggle" title="Alternar Tema" class="theme-toggle-button">
+                <i class="fas fa-sun"></i>
+            </button>
         </div>
     </header>
 
     <main>
-        <!-- Jinja2 -> código instalado com o flask para implantar comandos back-end dentro do HTML -->
         {% block conteudo %}{% endblock %}
     </main>
 
