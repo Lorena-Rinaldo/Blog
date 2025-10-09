@@ -14,6 +14,9 @@
         </div>
         <div class="col-info">
             <h3>Posts</h3>
+            {% for p in posts %}
+            <p>{{ p.idPost }} - {{ p.titulo}} - {{ p.conteudo | truncate(30) }}</p>
+            {% endfor %}
         </div>
     </div>
 </div>
