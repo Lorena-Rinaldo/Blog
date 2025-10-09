@@ -52,3 +52,15 @@ def adicionar_post(titulo, conteudo, idUsuario):
     except mysql.connector.Error as erro:
         print(f"Erro de BD! \n Erro: {erro}")
         return False
+
+
+# Função para listar todos os usuários
+def listar_usuarios():
+    try:
+        with conectar() as conexao:
+            cursor = conexao.cursor(dictionary=True)
+            cursor.execute("SELECT * FROM usuario")
+            return cursor.fetchall()
+    except mysql.connector.Error as erro:
+        print(f"Erro de BD! \n Erro: {erro}")
+        return []  # Lista vazia

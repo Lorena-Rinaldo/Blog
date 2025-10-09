@@ -1,12 +1,30 @@
-from flask import Flask, render_template, request, redirect, flash
-from database import listar_post, adicionar_post, conectar, buscar_post_por_id
+from flask import Flask, render_template, request, redirect, flash, session
 
+from database import (
+    listar_post,
+    adicionar_post,
+    conectar,
+    buscar_post_por_id,
+    listar_usuarios,
+)
+
+from dotenv import load_dotenv
+
+import os
 import mysql.connector
+
+# Carregar esse arquivo para o Python
+load_dotenv()
+
+# Acessar as variáveis
+secret_key = os.getenv("SECRET_KEY")
+usuario_admin = os.getenv("USUARIO_ADMIN")
+senha_admin = os.getenv("SENHA_ADMIN")
+
 
 # Informa o tipo do app
 app = Flask(__name__)
-
-app.secret_key = "blog"  # Chave secreta -> quando precisamos passar informações de forma oculta para o navegador, precisamos do secret_key -> usado no login e senha também
+app.secret_key = secret_key  # Chave secreta -> quando precisamos passar informações de forma oculta para o navegador, precisamos do secret_key -> usado no login e senha também
 
 
 def truncar_conteudo(texto, limite=200):
@@ -119,7 +137,35 @@ def exibir_post(idPost):
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
-        return render_template('login.html')
+        return render_template("login.html")
+    elif request.method == "POST":
+        usuario = request.form["user"]
+        senha = request.form["senha"]
+        if usuario == usuario_admin and senha == senha_admin:
+            session["admin"] = True
+            return redirect("/dashboard")
+        else:
+            flash("Usuário ou senhas incorretos")
+            return redirect('/login')
+
+
+# Área de Adminitração
+@app.route("/dashboard")
+def dashboard():
+    # Bloqueio para acessos indevidos
+    if not session or "admin" not in session:
+        return redirect("/")
+
+    usuarios = listar_usuarios()
+    posts = listar_post()
+    return render_template("dashboard.html", posts=posts, usuarios=usuarios)
+
+
+# Rota do Logout
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/")
 
 
 #  ---Final do Arquivo---

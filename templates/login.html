@@ -1,14 +1,24 @@
 {% extends 'base.html' %}
 {% block conteudo %}
+
+{% with msg = get_flashed_messages()|first %}
+{% if msg %}
+<div id="flashPopup" class="flash-message">
+    {{ msg }}
+</div>
+
+{% endif %}
+{% endwith %}
+
 <div class="login">
     <div class="container-login">
         <div class="imagem-login">
-            <img src="../static/img/logo.png" alt="Logo da Aplicação">
+            <img src="../static/img/login.jpg" alt="Logo da Aplicação">
         </div>
         <div class="form-login">
             <form action="/login" method="POST">
                 <label for="email">Login:</label>
-                <input type="text" name="user" placeholder="Nome de Usuário" autocomplete="off" required>
+                <input type="text" name="user" id="user" placeholder="Nome de Usuário" autocomplete="off" required>
 
                 <label for="senha">Senha:</label>
                 <input type="password" id="senha" name="senha" placeholder="Senha" autocomplete="off" required>

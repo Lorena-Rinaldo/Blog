@@ -396,3 +396,30 @@ footer {
     align-items: center;
     transition: background-color 0.3s, color 0.3s;
 }
+
+/* DASHBOARD */
+#dashboard{
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+
+    #dados{
+        width: 100%;
+        height: 15vh;
+        background-color: #FF3460;
+    }
+
+    #info{
+        width: 100%;
+        height: 65vh;
+        display: flex;
+        flex-direction: row;
+
+        .col-info{
+            width: 50%;
+            height: 65vh;
+            background-color: aqua;
+        }
+    }
+}
