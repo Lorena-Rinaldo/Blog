@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+<div class="login">
+    <div class="container-login">
+        <div class="imagem-login">
+            <img src="../static/img/logo.png" alt="Logo da Aplicação">
+        </div>
+        <div class="form-login">
+            <form action="/login" method="POST">
+                <label for="email">Login:</label>
+                <input type="text" name="user" placeholder="Nome de Usuário" autocomplete="off" required>
+
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" name="senha" placeholder="Senha" autocomplete="off" required>
+
+                <a href="">Não tem cadastro? Faça agora</a>
+
+                <button type="submit">Logar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
