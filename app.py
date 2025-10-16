@@ -1,17 +1,14 @@
 from flask import Flask, render_template, request, redirect, flash, session
 
-from database import (
-    listar_post,
-    adicionar_post,
-    conectar,
-    buscar_post_por_id,
-    listar_usuarios,
-)
+from database import *
 
 from dotenv import load_dotenv
 
+from werkzeug.security import generate_password_hash, check_password_hash
+
 import os
 import mysql.connector
+
 
 # Carregar esse arquivo para o Python
 load_dotenv()
@@ -143,7 +140,7 @@ def login():
         senha = request.form["senha"]
         if usuario == usuario_admin and senha == senha_admin:
             session["admin"] = True
-            return redirect("/dashboard")
+            return redirect("/")
         else:
             flash("Usuário ou senhas incorretos")
             return redirect('/login')
@@ -166,6 +163,26 @@ def dashboard():
 def logout():
     session.clear()
     return redirect("/")
+
+#Rota para cadastro
+@app.route("/cadastro", methods=['GET', 'POST'])
+def cadastro():
+    if request.method == 'GET':
+        return render_template('cadastro.html')
+    elif request.method == 'POST': 
+        nome = request.form['nome']
+        usuario = request.form['user']
+        senha= request.form['senha']
+        if nome is None or usuario is None or senha is None:
+            flash('Preencha todos os campos!')
+            return redirect('/cadastro')
+        senha_hash = generate_password_hash(senha)
+        if adicionar_usuario(nome,usuario,senha_hash):
+            flash("Usuário Cadastrado com Sucesso")
+            return redirect('/login')
+        else:
+            flash("Erro ao Cadastrar Usuário")
+            return redirect('/cadastro')
 
 
 #  ---Final do Arquivo---

@@ -52,7 +52,19 @@ def adicionar_post(titulo, conteudo, idUsuario):
     except mysql.connector.Error as erro:
         print(f"Erro de BD! \n Erro: {erro}")
         return False
-
+    
+def adicionar_usuario(nome,user,senha):
+    try:
+        with conectar() as conexao:
+            cursor = conexao.cursor()
+            # O trecho '(%s, %s, %s)' significa injeção de SQL
+            sql = "INSERT INTO usuario (nome,user,senha) VALUES (%s, %s, %s)"
+            cursor.execute(sql, (nome,user,senha))
+            conexao.commit()
+            return True
+    except mysql.connector.Error as erro:
+        print(f"Erro de BD! \n Erro: {erro}")
+        return False
 
 # Função para listar todos os usuários
 def listar_usuarios():

@@ -6,7 +6,7 @@ CREATE TABLE usuario(
     idUsuario INT PRIMARY KEY AUTO_INCREMENT,
     nomeUsuario VARCHAR(50) NOT NULL,
     user VARCHAR(15) NOT NULL UNIQUE,
-    senha VARCHAR(60) NOT NULL,
+    senha VARCHAR(255) NOT NULL,
     fotoUsuario VARCHAR(100),
     dataCadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+
+{% with msg = get_flashed_messages()|first %}
+{% if msg %}
+<div id="flashPopup" class="flash-message">
+    {{ msg }}
+</div>
+
+{% endif %}
+{% endwith %}
+
+<div class="cadastro">
+    <div class="container-cadastro">
+        <div class="imagem-cadastro">
+            <img src="../static/img/login.jpg" alt="Logo da Aplicação">
+        </div>
+        <div class="form-cadastro">
+            <form action="/cadastro" method="POST">
+                <label for="email">Nome:</label>
+                <input type="text" name="nome" id="nome" placeholder="Nome" value="" autocomplete="off" required>
+
+                <label for="email">User:</label>
+                <input type="text" name="user" id="user" placeholder="Usuário" value="" autocomplete="off" required>
+
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" name="senha" placeholder="Senha" value="" autocomplete="off" required>
+
+                <p>Já tem login? <a href="/login">Acesse agora</a></p>
+
+                <button type="submit">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
