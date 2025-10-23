@@ -42,7 +42,7 @@
 
         <div class="header-direita">
             <nav>
-                {% if session %}
+                {% if 'user' in session or 'admin' in session %}
                 {% if 'admin' in session %}
                 <a href="/dashboard">Área ADM</a>
                 {% endif %}
@@ -55,6 +55,11 @@
     </header>
 
     <main>
+        {% if 'admin' in session %}
+        <p class="boas-vindas">Olá, Administrador!</p>
+        {% elif 'user' in session %}
+        <p class="boas-vindas">Olá, {{session['user']}}</p>
+        {% endif %}
         {% block conteudo %}{% endblock %}
     </main>
 

@@ -1,5 +1,7 @@
 import mysql.connector
 
+from werkzeug.security import check_password_hash
+
 # Função para se conectar com o Banco de Dados SQL
 def conectar():
     conexao = mysql.connector.connect(
@@ -51,21 +53,7 @@ def adicionar_post(titulo, conteudo, idUsuario):
     except mysql.connector.Error as erro:
         print(f"Erro de BD! \n Erro: {erro}")
         return False
-    
-def adicionar_usuario(nome,user,senha):
-    try:
-        with conectar() as conexao:
-            cursor = conexao.cursor()
-            # O trecho '(%s, %s, %s)' significa injeção de SQL
-            sql = "INSERT INTO usuario (nomeUsuario,user,senha) VALUES (%s, %s, %s)"
-            cursor.execute(sql, (nome,user,senha))
-            conexao.commit()
-            return True, "ok"
-    except mysql.connector.Error as erro:
-        print(f"Erro de BD! \n Erro: {erro}")
-        return False, erro
 
-# Função para listar todos os usuários
 def listar_usuarios():
     try:
         with conectar() as conexao:
@@ -75,3 +63,34 @@ def listar_usuarios():
     except mysql.connector.Error as erro:
         print(f"Erro de BD! \n Erro: {erro}")
         return []  # Lista vazia
+
+
+def adicionar_usuario(nome, user, senha):
+    try:
+        with conectar() as conexao:
+            cursor = conexao.cursor()
+            # O trecho '(%s, %s, %s)' significa injeção de SQL
+            sql = "INSERT INTO usuario (nomeUsuario,user,senha) VALUES (%s, %s, %s)"
+            cursor.execute(sql, (nome, user, senha))
+            conexao.commit()
+            return True, "ok"
+    except mysql.connector.Error as erro:
+        print(f"Erro de BD! \n Erro: {erro}")
+        return False, erro
+    
+def verificar_usuario(usuario,senha):
+    try:
+        with conectar() as conexao:
+            # O dictionary True, se não ativado, pegaria os atributo do BD por números, e não pelo nome( ex: idUsuario )
+            cursor = conexao.cursor(dictionary=True)
+            sql = "SELECT * FROM usuario WHERE user = %s;"
+            # A vírgula sozinha é uma tupla, pois sem ela, o programa entende que é uma variável
+            cursor.execute(sql, (usuario,) )
+            usuario_encontrado = cursor.fetchone()
+            if usuario_encontrado:
+                if check_password_hash(usuario_encontrado['senha'],senha):
+                    return True, usuario_encontrado
+            return False, None
+    except mysql.connector.Error as erro:
+        print(f"Erro de BD! \n Erro: {erro}")
+        return False, erro

@@ -448,3 +448,8 @@ footer {
         }
     }
 }
+
+.boas-vindas {
+    text-align: center;
+    font-size: large;
+}

@@ -128,11 +128,26 @@ def login():
     if request.method == "GET":
         return render_template("login.html")
     elif request.method == "POST":
-        usuario = request.form["user"]
+        usuario = request.form["user"].lower()
         senha = request.form["senha"]
+        # Verifica se todos os campos foram preenchidos
+        if usuario is None or senha is None:
+            flash("Preencha todos os campos")
+            return redirect('/login')
+        
+        # 1°, verifica se o usuário é o admin
         if usuario == usuario_admin and senha == senha_admin:
             session["admin"] = True
             return redirect("/")
+        
+        # 2°, verifica se é um usuário cadastrado
+        resultado, usuario_encontrado = verificar_usuario(usuario, senha)
+        if resultado:
+            session['idUsuario'] = usuario_encontrado['idUsuario']
+            session['user'] = usuario_encontrado['user']
+            return redirect('/')
+        
+        # 3° Nenhum usuário ou ADMIN foram encontrados
         else:
             flash("Usuário ou senhas incorretos")
             return redirect("/login")
