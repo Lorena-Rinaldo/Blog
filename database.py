@@ -60,7 +60,7 @@ def adicionar_usuario(nome,user,senha):
             sql = "INSERT INTO usuario (nomeUsuario,user,senha) VALUES (%s, %s, %s)"
             cursor.execute(sql, (nome,user,senha))
             conexao.commit()
-            return True
+            return True, "ok"
     except mysql.connector.Error as erro:
         print(f"Erro de BD! \n Erro: {erro}")
         return False, erro

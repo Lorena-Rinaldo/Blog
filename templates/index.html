@@ -67,13 +67,33 @@
                 <div class="post-content">
                     <h2>{{ post.titulo }}</h2>
 
+                    {% set conteudo_completo = post.conteudo %}
+                    {% set conteudo_truncado = post.conteudo | truncate(limite_char, killwords=False, end='') %}
+
                     {% if post.conteudo | length > limite_char %}
-                    {{ post.conteudo | truncate(limite_char, killwords=False, end='') }}
-                    <a href="{{ url_for('exibir_post', idPost=post.idPost) }}">...Leia Mais</a>
+                    {# Conteúdo Truncado: Visível por padrão #}
+                    <span id="conteudo-truncado-{{ post.idPost }}" class="texto-truncado">
+                        {{ conteudo_truncado }}
+                    </span>
+                    {# Conteúdo Completo: Oculto por padrão. Adicionamos a classe 'conteudo-oculto' #}
+                    <span id="conteudo-completo-{{ post.idPost }}" class="texto-completo" style="display: none;">
+                        {{ conteudo_completo }}
+                    </span>
+
+                    {# Link/Botão "Leia Mais" (visível por padrão) #}
+                    <a href="#" class="btn-toggle btn-leia-mais" data-post-id="{{ post.idPost }}">Leia Mais...</a>
+
+                    {# Link/Botão "Leia Menos" (oculto por padrão) #}
+                    <a href="#" class="btn-toggle btn-leia-menos" id="btn-menos-{{ post.idPost }}"
+                        style="display: none;" data-post-id="{{ post.idPost }}">Leia Menos...</a>
+
                     {% else %}
+                    {# Se o conteúdo for menor que o limite, mostre-o normalmente #}
                     {{ post.conteudo }}
                     {% endif %}
+
                 </div>
+
                 <div class="post-interacao">
                     <hr>
                     <div class="content-interacao">
@@ -95,5 +115,49 @@
 
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // Função unificada para alternar a visibilidade
+        function togglePostContent(postId, showFull) {
+            const truncado = document.getElementById(`conteudo-truncado-${postId}`);
+            const completo = document.getElementById(`conteudo-completo-${postId}`);
+            const btnMais = document.querySelector(`.btn-leia-mais[data-post-id="${postId}"]`);
+            const btnMenos = document.getElementById(`btn-menos-${postId}`);
+
+            if (truncado && completo && btnMais && btnMenos) {
+                if (showFull) {
+                    // Mostrar completo (Leia Mais clicado)
+                    truncado.style.display = 'none';
+                    completo.style.display = 'inline'; // ou 'block'
+                    btnMais.style.display = 'none';
+                    btnMenos.style.display = 'inline'; // ou 'block'
+                } else {
+                    // Mostrar truncado (Leia Menos clicado)
+                    truncado.style.display = 'inline'; // ou 'block'
+                    completo.style.display = 'none';
+                    btnMais.style.display = 'inline'; // ou 'block'
+                    btnMenos.style.display = 'none';
+                }
+            }
+        }
+
+        // Encontra todos os links que alternam (Leia Mais e Leia Menos)
+        const botoesToggle = document.querySelectorAll('.btn-toggle');
+
+        botoesToggle.forEach(botao => {
+            botao.addEventListener('click', function (event) {
+                event.preventDefault();
+                const postId = this.getAttribute('data-post-id');
+
+                // Verifica se é o botão "Leia Mais" (true para mostrar completo) ou "Leia Menos" (false)
+                const isLeiaMais = this.classList.contains('btn-leia-mais');
+
+                togglePostContent(postId, isLeiaMais);
+            });
+        });
+    });
+</script>
 
 {% endblock %}

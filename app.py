@@ -164,7 +164,7 @@ def cadastro():
         return render_template("cadastro.html")
     elif request.method == "POST":
         nome = request.form['nome']
-        usuario = request.form['user']
+        usuario = request.form['user'].lower()
         senha = request.form['senha']
         
         if nome is None or usuario is None or senha is None:
