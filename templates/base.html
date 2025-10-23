@@ -30,6 +30,11 @@
                     <i class="fa-solid fa-chevron-left"></i>
                 </a>
             </nav>
+            {% if 'admin' in session %}
+            <p class="boas-vindas">Olá, Administrador!</p>
+            {% elif 'user' in session %}
+            <p class="boas-vindas">Olá, {{session['user']}}</p>
+            {% endif %}
         </div>
 
         <!-- LOGO (CENTRO) -->
@@ -55,11 +60,6 @@
     </header>
 
     <main>
-        {% if 'admin' in session %}
-        <p class="boas-vindas">Olá, Administrador!</p>
-        {% elif 'user' in session %}
-        <p class="boas-vindas">Olá, {{session['user']}}</p>
-        {% endif %}
         {% block conteudo %}{% endblock %}
     </main>
 

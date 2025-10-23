@@ -18,6 +18,7 @@
     </div>
 
     <div class="col-centro">
+        {% if 'user' in session or 'admin' in session %}
         <div class="form-post">
             <!-- Se estiver no modo de edição, concatena a rota com o post.idPost e converte em string -->
             <form action="{{ '/editarpost/' + post.idPost|string if post else 'novopost' }}" method="post">
@@ -28,6 +29,7 @@
                 <button type="submit">{{'Salvar' if post else 'Postar'}}</button>
             </form>
         </div>
+        {% endif %}
         <div class="feed">
             <!-- Caso não haja posts -->
             {% if not postagens %}
@@ -37,6 +39,7 @@
             </div>
             {% else %}
             <!-- A linha abaixo repetirá a div post pela quantidade de postagens -->
+             <p>{{postagens}}</p>
             {% for post in postagens %}
             <div class="post">
                 <div class="post-header">
@@ -49,7 +52,7 @@
                             <p> {{ post.dataPost.strftime('%d/%m/%Y') }} </p>
                         </div>
                     </div>
-
+                    {% if 'admin' in session or session.get('idUsuario') == post.idUsuario %}
                     <div class="post-button">
                         <div class="opcoes-menu" id="menuOptions-{{post.idPost}}">
                             <a href="/editarpost/{{post.idPost}}">
@@ -62,6 +65,7 @@
                         <h3 class="ellipsis-icon" id="ellipsisIcon-{{post.idPost}}"><i class="fa-solid fa-ellipsis"></i>
                         </h3>
                     </div>
+                    {% endif %}
                 </div>
                 {% set limite_char = 150 %}
                 <div class="post-content">

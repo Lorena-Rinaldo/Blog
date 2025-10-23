@@ -44,6 +44,7 @@ def novopost():
     if request.method == "POST":
         titulo = request.form["titulo"]
         conteudo = request.form["conteudo"]
+        # idUsuario = 1 -> Mudar
         idUsuario = 1
         post = adicionar_post(titulo, conteudo, idUsuario)
 
