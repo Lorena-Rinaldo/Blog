@@ -1,6 +1,5 @@
 import mysql.connector
 
-
 # Função para se conectar com o Banco de Dados SQL
 def conectar():
     conexao = mysql.connector.connect(
@@ -58,13 +57,13 @@ def adicionar_usuario(nome,user,senha):
         with conectar() as conexao:
             cursor = conexao.cursor()
             # O trecho '(%s, %s, %s)' significa injeção de SQL
-            sql = "INSERT INTO usuario (nome,user,senha) VALUES (%s, %s, %s)"
+            sql = "INSERT INTO usuario (nomeUsuario,user,senha) VALUES (%s, %s, %s)"
             cursor.execute(sql, (nome,user,senha))
             conexao.commit()
             return True
     except mysql.connector.Error as erro:
         print(f"Erro de BD! \n Erro: {erro}")
-        return False
+        return False, erro
 
 # Função para listar todos os usuários
 def listar_usuarios():

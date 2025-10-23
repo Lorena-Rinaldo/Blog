@@ -1,14 +1,10 @@
 from flask import Flask, render_template, request, redirect, flash, session
-
 from database import *
-
 from dotenv import load_dotenv
-
 from werkzeug.security import generate_password_hash, check_password_hash
 
 import os
 import mysql.connector
-
 
 # Carregar esse arquivo para o Python
 load_dotenv()
@@ -18,18 +14,15 @@ secret_key = os.getenv("SECRET_KEY")
 usuario_admin = os.getenv("USUARIO_ADMIN")
 senha_admin = os.getenv("SENHA_ADMIN")
 
-
 # Informa o tipo do app
 app = Flask(__name__)
 app.secret_key = secret_key  # Chave secreta -> quando precisamos passar informações de forma oculta para o navegador, precisamos do secret_key -> usado no login e senha também
-
 
 def truncar_conteudo(texto, limite=200):
     # Corta o texto e adiciona '...' se ele exceder o limite.
     if len(texto) > limite:
         return texto[:limite] + "..."
     return texto
-
 
 # Rota Página Inicial
 @app.route("/")
@@ -42,7 +35,6 @@ def index():
     return render_template(
         "index.html", postagens=postagens
     )  # O template lida com informações
-
 
 # Rota do form de postagem
 @app.route("/novopost", methods=["GET", "POST"])
@@ -143,7 +135,7 @@ def login():
             return redirect("/")
         else:
             flash("Usuário ou senhas incorretos")
-            return redirect('/login')
+            return redirect("/login")
 
 
 # Área de Adminitração
@@ -164,25 +156,34 @@ def logout():
     session.clear()
     return redirect("/")
 
-#Rota para cadastro
-@app.route("/cadastro", methods=['GET', 'POST'])
+
+# Rota para cadastro
+@app.route("/cadastro", methods=["GET", "POST"])
 def cadastro():
-    if request.method == 'GET':
-        return render_template('cadastro.html')
-    elif request.method == 'POST': 
+    if request.method == "GET":
+        return render_template("cadastro.html")
+    elif request.method == "POST":
         nome = request.form['nome']
         usuario = request.form['user']
-        senha= request.form['senha']
+        senha = request.form['senha']
+        
         if nome is None or usuario is None or senha is None:
-            flash('Preencha todos os campos!')
-            return redirect('/cadastro')
+            flash("Preencha todos os campos!")
+            return redirect("/cadastro")
+
         senha_hash = generate_password_hash(senha)
-        if adicionar_usuario(nome,usuario,senha_hash):
+
+        resultado, erro = adicionar_usuario(nome, usuario, senha_hash)
+
+        if resultado:
             flash("Usuário Cadastrado com Sucesso")
-            return redirect('/login')
+            return redirect("/login")
         else:
-            flash("Erro ao Cadastrar Usuário")
-            return redirect('/cadastro')
+            if erro.errno == 1062:
+                flash("Usuário já existente.")
+            else:
+                flash("Erro ao cadastrar. Procure o suporte")
+            return redirect("/cadastro")
 
 
 #  ---Final do Arquivo---
