@@ -59,6 +59,7 @@ def novopost():
 # Rota para Editar posts
 @app.route("/editarpost/<int:idPost>", methods=["GET", "POST"])
 def editarpost(idPost):
+    
     if request.method == "GET":
         try:
             with conectar() as conexao:
@@ -93,19 +94,27 @@ def editarpost(idPost):
 # Rota para Excluir Post
 @app.route("/excluirpost/<int:idPost>")
 def excluirpost(idPost):
+    # 1° verificação: Checar se o usuário é o/a autor(a) do post
+    if not session:
+        print("Usuário não autorizado acessando a rota excluir")
+        return redirect('/')
     try:
         with conectar() as conexao:
-            cursor = conexao.cursor()
-            # O trecho '(%s, %s, %s)' significa injeção de SQL
-            sql = "DELETE FROM post WHERE idPost = %s"
-            cursor.execute(sql, (idPost,))
-            conexao.commit()
-            flash("Post Excluído!")
-            return redirect("/")
+            cursor = conexao.cursor(dictionary=True)
+            cursor.execute(f"SELECT idUsuario FROM post WHERE idPost = {idPost}")
+            autor_post = cursor.fetchone()
+            if autor_post['idUsuario'] != session.get('idUsuario'):
+                print("Tentativa de exclusão inválida")
+                return redirect('/')
+            else:
+                cursor.execute(f"DELETE FROM post WHERE idPost = {idPost}")
+                conexao.commit()
+                flash("Post Excluído com Sucesso!")
+                return redirect('/')
     except mysql.connector.Error as erro:
         print(f"Erro de BD! \n Erro: {erro}")
         flash("Ops! Tente mais tarde!")
-        redirect("/")
+        return redirect('/')  
 
 
 @app.route("/post/<int:idPost>")
