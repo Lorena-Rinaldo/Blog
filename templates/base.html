@@ -23,20 +23,6 @@
 
 <body>
     <header>
-        <!-- COLUNA ESQUERDA: Navegação e Toggle de Tema -->
-        <div class="header-esquerda">
-            <nav>
-                <a href="/">
-                    <i class="fa-solid fa-chevron-left"></i>
-                </a>
-            </nav>
-            {% if 'admin' in session %}
-            <p class="boas-vindas">Olá, Administrador!</p>
-            {% elif 'user' in session %}
-            <p class="boas-vindas">Olá, {{session['user']}}</p>
-            {% endif %}
-        </div>
-
         <!-- LOGO (CENTRO) -->
         <div class="logo">
             <a href="/">
@@ -45,15 +31,21 @@
             </a>
         </div>
 
+        <!-- COLUNA ESQUERDA: Navegação e Toggle de Tema -->
+        <div class="header-esquerda">
+
+        </div>
+
         <div class="header-direita">
             <nav>
                 {% if 'user' in session or 'admin' in session %}
                 {% if 'admin' in session %}
-                <a href="/dashboard">Área ADM</a>
+                <a href="/dashboard">ÁREA ADM</a>
                 {% endif %}
-                <a href="/logout">Logout</a>
+                <a href="/logout">SAIR</a>
                 {% else %}
-                <a href="/login">Login</a>
+                <a href="/login">ENTRAR</a>
+                <a href="/cadastro">COMECE AGORA</a>
                 {% endif %}
             </nav>
         </div>
@@ -64,7 +56,16 @@
     </main>
 
     <footer>
-        <p>Meu Blog - Feito com Flask</p>
+        <section class="icones-sociais col-footer">
+            <a href="https://github.com/Lorena-Rinaldo" target="_blank" class="github" target="_blank"
+                rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/lorena-rinaldo01" target="_blank" class="linkedin" target="_blank"
+                rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="whatsapp"><i class="fab fa-whatsapp"></i></a>
+            <a href="#" class="instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="youtube"><i class="fab fa-youtube"></i></a>
+        </section>
+        </div>
     </footer>
 
     {% block scripts %}{% endblock %}

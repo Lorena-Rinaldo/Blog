@@ -44,8 +44,7 @@ def novopost():
     if request.method == "POST":
         titulo = request.form["titulo"]
         conteudo = request.form["conteudo"]
-        # idUsuario = 1 -> Mudar
-        idUsuario = 1
+        idUsuario = session['idUsuario']
         post = adicionar_post(titulo, conteudo, idUsuario)
 
         # Se for verdadeiro(True):
@@ -56,7 +55,6 @@ def novopost():
 
         # Encaminhar para a rota da página iniciaç
         return redirect("/")
-
 
 # Rota para Editar posts
 @app.route("/editarpost/<int:idPost>", methods=["GET", "POST"])

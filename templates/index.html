@@ -18,10 +18,13 @@
     </div>
 
     <div class="col-centro">
-        {% if 'user' in session or 'admin' in session %}
+        {% if 'user' in session or not postagens%}
         <div class="form-post">
             <!-- Se estiver no modo de edição, concatena a rota com o post.idPost e converte em string -->
             <form action="{{ '/editarpost/' + post.idPost|string if post else 'novopost' }}" method="post">
+                {% if 'user' in session %}
+                <p class="boas-vindas">Olá, {{session['user']}}! O que deseja postar hoje?</p>
+                {% endif %}
                 <input type="text" name="titulo" placeholder="Título da Postagem"
                     value="{{ post.titulo if post else '' }}" required>
                 <textarea name="conteudo" placeholder="Escreva aqui..."
@@ -39,13 +42,12 @@
             </div>
             {% else %}
             <!-- A linha abaixo repetirá a div post pela quantidade de postagens -->
-             <p>{{postagens}}</p>
             {% for post in postagens %}
             <div class="post">
                 <div class="post-header">
                     <div class="user">
                         <div class="user_photo">
-                            <img src="../static/uploads/{{post.fotoUsuario}}" alt="">
+                            <img src="../static/uploads/foto-user-1.png" alt="">
                         </div>
                         <div>
                             <h2>{{ post.user }} disse:</h2>
@@ -55,9 +57,11 @@
                     {% if 'admin' in session or session.get('idUsuario') == post.idUsuario %}
                     <div class="post-button">
                         <div class="opcoes-menu" id="menuOptions-{{post.idPost}}">
+                            {% if 'user' in session %}
                             <a href="/editarpost/{{post.idPost}}">
                                 <h3><i class="fa-solid fa-pencil"></i> Editar</h3>
                             </a>
+                            {% endif %}
                             <a href="/excluirpost/{{post.idPost}}">
                                 <h3><i class="fa-solid fa-trash"></i> Excluir</h3>
                             </a>

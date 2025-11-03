@@ -388,6 +388,39 @@ footer {
     transition: background-color 0.3s, color 0.3s;
 }
 
+
+.icones-sociais {
+    display: flex;
+    gap: 1em;
+    font-size: 25px;
+}
+
+.icones-sociais a {
+    color: rgb(255, 255, 255);
+    transition: color 0.3s, transform 0.3s;
+    transform: scale(1.2);
+}
+
+.icones-sociais a:hover {
+    transform: scale(1.3);
+}
+
+.icones-sociais .whatsapp:hover {
+    color: #25D366;
+}
+
+.icones-sociais .linkedin:hover {
+    color: #1877F2;
+}
+
+.icones-sociais .instagram:hover {
+    color: #eb5dad;
+}
+
+.icones-sociais .youtube:hover {
+    color: #FF0000;
+}
+
 #dashboard {
     width: 95%;
     max-width: 1200px;
