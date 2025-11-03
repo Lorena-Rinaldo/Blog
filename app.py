@@ -94,7 +94,6 @@ def editarpost(idPost):
 # Rota para Excluir Post
 @app.route("/excluirpost/<int:idPost>")
 def excluirpost(idPost):
-    # 1° verificação: Checar se o usuário é o/a autor(a) do post
     if not session:
         print("Usuário não autorizado acessando a rota excluir")
         return redirect('/')
@@ -104,7 +103,7 @@ def excluirpost(idPost):
             if 'admin' not in session:
                 cursor.execute(f"SELECT idUsuario FROM post WHERE idPost = {idPost}")
                 autor_post = cursor.fetchone()
-                if autor_post['idUsuario'] != session.get('idUsuario'):
+                if not autor_post or autor_post['idUsuario'] != session.get('idUsuario'):
                     print("Tentativa de exclusão inválida")
                     return redirect('/')
                 
@@ -112,6 +111,7 @@ def excluirpost(idPost):
             conexao.commit()
             flash("Post Excluído com Sucesso!")
             return redirect('/')
+        
     except mysql.connector.Error as erro:
         print(f"Erro de BD! \n Erro: {erro}")
         flash("Ops! Tente mais tarde!")
