@@ -101,16 +101,17 @@ def excluirpost(idPost):
     try:
         with conectar() as conexao:
             cursor = conexao.cursor(dictionary=True)
-            cursor.execute(f"SELECT idUsuario FROM post WHERE idPost = {idPost}")
-            autor_post = cursor.fetchone()
-            if autor_post['idUsuario'] != session.get('idUsuario'):
-                print("Tentativa de exclusão inválida")
-                return redirect('/')
-            else:
-                cursor.execute(f"DELETE FROM post WHERE idPost = {idPost}")
-                conexao.commit()
-                flash("Post Excluído com Sucesso!")
-                return redirect('/')
+            if 'admin' not in session:
+                cursor.execute(f"SELECT idUsuario FROM post WHERE idPost = {idPost}")
+                autor_post = cursor.fetchone()
+                if autor_post['idUsuario'] != session.get('idUsuario'):
+                    print("Tentativa de exclusão inválida")
+                    return redirect('/')
+                
+            cursor.execute(f"DELETE FROM post WHERE idPost = {idPost}")
+            conexao.commit()
+            flash("Post Excluído com Sucesso!")
+            return redirect('/')
     except mysql.connector.Error as erro:
         print(f"Erro de BD! \n Erro: {erro}")
         flash("Ops! Tente mais tarde!")
