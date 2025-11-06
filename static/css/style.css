@@ -10,6 +10,10 @@
     --cor-texto-principal: #333333;
     --cor-texto-secundaria: #6B7280;
     --cor-texto-header: #efefef;
+    --hover-cor-secundaria: #ff0037;
+    --azul-ceu: #A0E2FF;
+    --azul-lavanda: #99B9F0;
+    --azul-purpura:#6C6CEF;
 
     --fonte-principal: 'Plus Jakarta Sans', sans-serif;
 }
@@ -195,6 +199,7 @@ main {
             border: none;
             cursor: pointer;
             transition: opacity 0.3s;
+            user-select: none;
         }
 
         button:hover {
@@ -398,16 +403,16 @@ footer {
         font-size: 25px;
         padding: 20px 0;
 
-        .midia-titulo{
-            display: flex; 
+        .midia-titulo {
+            display: flex;
             align-items: center;
-            justify-content: flex-start; 
-            width: 50%; 
-            
+            justify-content: flex-start;
+            width: 50%;
+
             h2 {
                 font-size: 0.8em;
-                text-align: left; 
-                margin: 0; 
+                text-align: left;
+                margin: 0;
             }
         }
 
@@ -489,67 +494,6 @@ footer {
         display: flex;
         flex-direction: row;
         padding: 5px;
-    }
-}
-
-#dashboard {
-    width: 95%;
-    max-width: 1200px;
-    margin: 20px auto;
-    min-height: 80vh;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-
-    #dados {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        min-height: 10vh;
-        background-color: var(--cor-texto-principal);
-        border-radius: 8px;
-        box-shadow: var(--sombra-media);
-        padding: 15px;
-    }
-
-    #info {
-        display: flex;
-        flex-direction: row;
-        gap: 20px;
-        width: 100%;
-        flex-grow: 1;
-
-        .col-info {
-            flex: 1;
-            background-color: var(--cor-secundaria);
-            border-radius: 8px;
-            box-shadow: var(--sombra-media);
-            padding: 20px;
-
-            h3 {
-                text-align: center;
-                color: var(--cor-destaque);
-                margin-top: 0;
-                margin-bottom: 20px;
-                padding-bottom: 10px;
-                border-bottom: 2px solid var(--cor-destaque);
-            }
-
-            p {
-                background-color: var(--cor-primaria);
-                padding: 10px 15px;
-                margin: 10px 0;
-                border-radius: 5px;
-                color: var(--cor-texto-claro);
-                border: 1px solid var(--cor-borda);
-                font-size: 0.95em;
-
-                &:hover {
-                    background-color: rgba(100, 255, 218, 0.1);
-                    cursor: pointer;
-                }
-            }
-        }
     }
 }
 

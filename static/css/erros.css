@@ -1,0 +1,40 @@
+.container-erro {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 80vh;
+    width: 100%;
+    background: linear-gradient(to bottom right, var(--azul-ceu), var(--azul-lavanda), var(--azul-purpura));
+
+    h1 {
+        color: var(--cor-texto-principal);
+    }
+}
+
+.mensagem-erro {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.botao-voltar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    button {
+        width: 100%;
+        background-color: #1e2e81;
+        padding: 8px;
+        border-radius: 5px;
+        align-self: center;
+        color: var(--cor-texto-header);
+        border: none;
+        cursor: pointer;
+        transition: opacity 0.3s;
+        user-select: none;
+    }
+}

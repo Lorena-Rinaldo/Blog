@@ -11,18 +11,30 @@
 
 <div class="login">
     <div class="container-login">
-        <div class="imagem-login">
-            <img src="../static/img/login.jpg" alt="Logo da Aplicação">
+        <div class="tagline-login">
+            <div class="logo">
+                <a href="/">
+                    <img src="../static/img/logo.png" alt="Logo do Blog">
+                    <h1>Foxmood</h1>
+                </a>
+            </div>
+            <div class="tagline">
+                <h3>SUA PRÓXIMA GRANDE IDEIA ESPERA POR VOCÊ. FAÇA LOGIN E INSPIRE-SE.</h3>
+            </div>
+            <div class="tagline-linha">
+                <hr>
+            </div>
         </div>
         <div class="form-login">
             <form action="/login" method="POST">
                 <label for="email">Login:</label>
-                <input type="text" name="user" id="user" placeholder="Nome de Usuário" value="" autocomplete="off" required>
+                <input type="text" name="user" id="user" placeholder="Nome de Usuário" value="" autocomplete="off"
+                    required>
 
                 <label for="senha">Senha:</label>
                 <input type="password" id="senha" name="senha" placeholder="Senha" value="" autocomplete="off" required>
 
-               <p>Não tem cadastro? <a href="/cadastro">Faça agora</a></p> 
+                <p>Não tem cadastro? <a href="/cadastro">Faça agora</a></p>
 
                 <button type="submit">Entrar</button>
             </form>

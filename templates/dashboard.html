@@ -7,15 +7,26 @@
     </div>
     <div id="info">
         <div class="col-info">
-            <h3>Usuários</h3>
+            <div>
+                <h3>Usuários</h3>
+            </div>
+            <hr>
             {% for u in usuarios %}
             <p>{{ u.idUsuario }} - {{ u.user}} - {{ u.nomeUsuario }}</p>
             {% endfor %}
         </div>
         <div class="col-info">
-            <h3>Posts</h3>
+            <div>
+                <h3>Posts</h3>
+            </div>
+            <hr>
             {% for p in posts %}
-            <p>{{ p.idPost }} - {{ p.titulo}} - {{ p.conteudo | truncate(30) }}</p>
+            <p>
+                <a href="/excluirpost/{{p.idPost}}" onclick="return confirm('Deseja realmente excluir?')">
+                    <i class="fa-solid fa-trash"></i>
+                </a>
+                {{ p.idPost }} - {{ p.titulo}} - {{ p.conteudo | truncate(30) }}
+            </p>
             {% endfor %}
         </div>
     </div>

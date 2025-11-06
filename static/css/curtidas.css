@@ -1,7 +1,13 @@
+.curtidas {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    user-select: none;
+}
+
 .curtidas i {
     color: inherit;
-    cursor: pointer;
-    transition: color 0.2s ease; 
+    transition: color 0.2s ease;
 }
 
 .curtido {

@@ -42,9 +42,12 @@ def novopost():
     if request.method == "GET":
         return redirect("/")
     if request.method == "POST":
-        titulo = request.form["titulo"]
-        conteudo = request.form["conteudo"]
+        titulo = request.form["titulo"].strip()
+        conteudo = request.form["conteudo"].strip()
         idUsuario = session['idUsuario']
+        if not titulo or not conteudo:
+            flash("Preencha todos os campos!")
+            return redirect('/')
         post = adicionar_post(titulo, conteudo, idUsuario)
 
         # Se for verdadeiro(True):
@@ -54,11 +57,22 @@ def novopost():
             flash("ERRO! Falha ao Postar!")
 
         # Encaminhar para a rota da página iniciaç
-        return redirect("/")
+        # return redirect("/")
 
 # Rota para Editar posts
 @app.route("/editarpost/<int:idPost>", methods=["GET", "POST"])
 def editarpost(idPost):
+    if 'user' not in session or 'admin' in session:
+        return redirect('/')
+    
+    #Checa a autoria da postagem
+    with conectar() as conexao:
+        cursor = conexao.cursor(dictionary=True)
+        cursor.execute(f"SELECT idUsuario FROM post WHERE idPost = {idPost}")
+        autor_post = cursor.fetchone()
+        if not autor_post or autor_post['idUsuario'] != session.get('idUsuario'):
+            print("Tentativa de edição inválida")
+            return redirect('/')
     
     if request.method == "GET":
         try:
@@ -75,8 +89,11 @@ def editarpost(idPost):
 
     if request.method == "POST":
         # Pegando informações do formulário
-        titulo = request.form["titulo"]
-        conteudo = request.form["conteudo"]
+        titulo = request.form["titulo"].strip()
+        conteudo = request.form["conteudo"].strip()
+        if not titulo or not conteudo:
+            flash("Preencha todos os campos!")
+            return redirect(f'/editarpost/{idPost}')
         try:
             with conectar() as conexao:
                 cursor = conexao.cursor()
@@ -110,7 +127,10 @@ def excluirpost(idPost):
             cursor.execute(f"DELETE FROM post WHERE idPost = {idPost}")
             conexao.commit()
             flash("Post Excluído com Sucesso!")
-            return redirect('/')
+            if 'admin' in session:
+                return redirect('/dashboard')
+            else:
+                return redirect('/')
         
     except mysql.connector.Error as erro:
         print(f"Erro de BD! \n Erro: {erro}")
@@ -137,10 +157,10 @@ def login():
     if request.method == "GET":
         return render_template("login.html")
     elif request.method == "POST":
-        usuario = request.form["user"].lower()
-        senha = request.form["senha"]
+        usuario = request.form["user"].lower().strip()
+        senha = request.form["senha"].strip()
         # Verifica se todos os campos foram preenchidos
-        if usuario is None or senha is None:
+        if not usuario or not senha:
             flash("Preencha todos os campos")
             return redirect('/login')
         
@@ -187,11 +207,11 @@ def cadastro():
     if request.method == "GET":
         return render_template("cadastro.html")
     elif request.method == "POST":
-        nome = request.form['nome']
-        usuario = request.form['user'].lower()
-        senha = request.form['senha']
+        nome = request.form['nome'].strip()
+        usuario = request.form['user'].lower().strip()
+        senha = request.form['senha'].strip()
         
-        if nome is None or usuario is None or senha is None:
+        if not nome or not usuario or not senha:
             flash("Preencha todos os campos!")
             return redirect("/cadastro")
 
@@ -210,6 +230,17 @@ def cadastro():
             return redirect("/cadastro")
 
 
+# ERRO 404
+@app.errorhandler(404)
+def pagina_nao_encontrada(error):
+    return render_template('e404.html')
+    
+# ERRO 500
+@app.errorhandler(500)
+def erro_interno(error):
+    return render_template('e500.html')
+
 #  ---Final do Arquivo---
 if __name__ == "__main__":
-    app.run(debug=True)
+    # app.run(debug=True)
+    app.run()
