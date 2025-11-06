@@ -105,8 +105,8 @@
                 <div class="post-interacao">
                     <hr>
                     <div class="content-interacao">
-                        <div class="curtidas" onclick="alternarCurtida()">
-                            <i id="icone-curtir" class="far fa-heart"></i> Amei
+                        <div class="curtidas" onclick="alternarCurtida('{{ post.idPost }}')">
+                            <i id="icone-curtir-{{ post.idPost }}" class="far fa-heart"></i> Amei
                         </div>
                         <div class="comentarios">
                             <i class="far fa-comment"></i> Comentar
