@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 
-/* --- VARIÁVEIS DO TEMA CLARO (Padrão) --- */
 :root {
     --cor-principal: #080D26;
     --cor-secundaria: #FF3460;
@@ -13,12 +12,10 @@
     --hover-cor-secundaria: #ff0037;
     --azul-ceu: #A0E2FF;
     --azul-lavanda: #99B9F0;
-    --azul-purpura:#6C6CEF;
-
+    --azul-purpura: #6C6CEF;
     --fonte-principal: 'Plus Jakarta Sans', sans-serif;
 }
 
-/* --- VARIÁVEIS DO TEMA ESCURO --- */
 .dark {
     --cor-principal: #1F2937;
     --cor-secundaria: #FF3460;
@@ -330,7 +327,6 @@ main {
     }
 }
 
-
 .post-content {
     padding: 10px 27px;
 
@@ -389,116 +385,131 @@ footer {
     color: var(--cor-texto-header);
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    padding: 20px 0;
     transition: background-color 0.3s, color 0.3s;
-
-    .midias-sociais {
-        display: flex;
-        justify-content: space-between;
-        flex-direction: row;
-        align-items: center;
-        width: 90%;
-        gap: 1em;
-        font-size: 25px;
-        padding: 20px 0;
-
-        .midia-titulo {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            width: 50%;
-
-            h2 {
-                font-size: 0.8em;
-                text-align: left;
-                margin: 0;
-            }
-        }
-
-        .icones-sociais {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            width: 50%;
-            gap: 1em;
-            font-size: 25px;
-            padding: 0;
-
-            a {
-                color: rgb(255, 255, 255);
-                transition: color 0.3s, transform 0.3s;
-                transform: scale(1.2);
-
-                &:hover {
-                    transform: scale(1.3);
-                }
-
-                &.whatsapp:hover {
-                    color: #25D366;
-                }
-
-                &.linkedin:hover {
-                    color: #1877F2;
-                }
-
-                &.instagram:hover {
-                    color: #eb5dad;
-                }
-
-                &.youtube:hover {
-                    color: #FF0000;
-                }
-            }
-        }
-    }
-
-    hr {
-        width: 100%;
-        height: 1px;
-        border: none;
-        margin: 20px 0;
-        background-color: var(--cor-fundo);
-    }
-
-    .footer-info {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-        margin: 1em;
-
-        .info {
-            width: 12%;
-
-            h3 {
-                font-size: 16px;
-            }
-
-            p {
-                font-size: 14px;
-            }
-
-            h3+p {
-                text-align: left;
-            }
-
-            hr {
-                margin-top: 10px;
-                width: 40%;
-                background-color: var(--cor-secundaria);
-            }
-        }
-    }
-
-    .footer-direitos {
-        display: flex;
-        flex-direction: row;
-        padding: 5px;
-    }
 }
 
-.boas-vindas {
+.midias-sociais {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    max-width: 1200px;
+    padding: 20px 0;
+    flex-wrap: wrap;
+}
+
+.midias-sociais .midia-titulo {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 1;
+    min-width: 250px;
+}
+
+.midias-sociais .midia-titulo h2 {
+    font-size: 1.2em;
+    text-align: left;
+    margin: 0;
+    color: var(--cor-texto-header);
+}
+
+.midias-sociais .icones-sociais {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    font-size: 28px;
+    flex: 1;
+    min-width: 200px;
+}
+
+.midias-sociais .icones-sociais a {
+    color: var(--cor-texto-header);
+    transition: color 0.3s, transform 0.3s;
+    transform: scale(1);
+}
+
+.midias-sociais .icones-sociais a:hover {
+    transform: scale(1.15);
+}
+
+.midias-sociais .icones-sociais a.whatsapp:hover {
+    color: #25D366;
+}
+
+.midias-sociais .icones-sociais a.linkedin:hover {
+    color: #0A66C2;
+}
+
+.midias-sociais .icones-sociais a.instagram:hover {
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.midias-sociais .icones-sociais a.youtube:hover {
+    color: #FF0000;
+}
+
+hr {
+    width: 100%;
+    height: 1px;
+    border: none;
+    margin: 20px 0;
+    background-color: var(--cor-fundo);
+}
+
+.footer-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 90%;
+    max-width: 1200px;
+    margin-bottom: 30px;
+    gap: 20px;
+}
+
+.footer-info .info {
+    flex: 1;
+    min-width: 180px;
+    padding: 10px;
+    text-align: left;
+}
+
+.footer-info .info h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: var(--cor-texto-header);
+}
+
+.footer-info .info hr {
+    width: 50px;
+    margin: 0 0 15px 0;
+    background-color: var(--cor-secundaria);
+}
+
+.footer-info .info a {
+    text-decoration: none;
+    color: var(--cor-post);
+    font-size: 15px;
+    line-height: 1.6;
+    display: block;
+    margin-bottom: 5px;
+    transition: color 0.3s ease;
+}
+
+.footer-info .info a:hover {
+    color: var(--cor-destaque);
+    text-decoration: underline;
+}
+
+.footer-direitos {
+    width: 90%;
+    max-width: 1200px;
     text-align: center;
-    font-size: large;
-    margin-left: 1em;
+    padding: 10px 0;
+    font-size: 0.9em;
+    color: var(--cor-texto-header);
 }

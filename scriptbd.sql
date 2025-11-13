@@ -8,7 +8,8 @@ CREATE TABLE usuario(
     user VARCHAR(15) NOT NULL UNIQUE,
     senha VARCHAR(255) NOT NULL,
     fotoUsuario VARCHAR(100),
-    dataCadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    dataCadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ativo BOOLEAN NOT NULL DEFAULT 1
 );
 
 CREATE TABLE post(
@@ -19,3 +20,6 @@ CREATE TABLE post(
     idUsuario INT,
     FOREIGN KEY (idUsuario) REFERENCES usuario(idUsuario)
 );
+
+ALTER TABLE usuario
+ADD ativo BOOLEAN NOT NULL DEFAULT 1;
