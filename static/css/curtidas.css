@@ -10,6 +10,20 @@
     transition: color 0.2s ease;
 }
 
+/* .btn-curtir {
+    background: none;
+    border: none;
+    color: #ff4d6d;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+.btn-curtir:hover {
+    transform: scale(1.1);
+} */
+
+
 .curtido {
     color: red;
 }

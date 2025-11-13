@@ -18,7 +18,7 @@
     </div>
 
     <div class="col-centro">
-        {% if 'user' in session or not postagens%}
+        {% if 'user' in session%}
         <div class="form-post">
             <!-- Se estiver no modo de edição, concatena a rota com o post.idPost e converte em string -->
             <form action="{{ '/editarpost/' + post.idPost|string if post else 'novopost' }}" method="post">
@@ -108,6 +108,7 @@
                         <div class="curtidas" onclick="alternarCurtida('{{ post.idPost }}')">
                             <i id="icone-curtir-{{ post.idPost }}" class="far fa-heart"></i> Amei
                         </div>
+
                         <div class="comentarios">
                             <i class="far fa-comment"></i> Comentar
                         </div>

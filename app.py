@@ -179,6 +179,9 @@ def login():
         # 2°, verifica se é um usuário cadastrado
         resultado, usuario_encontrado = verificar_usuario(usuario, senha)
         if resultado:
+            if usuario_encontrado["ativo"] == 0:
+                flash("Usuário Banido! Fale com o Suporte")
+                return redirect("/login")
             session["idUsuario"] = usuario_encontrado["idUsuario"]
             session["user"] = usuario_encontrado["user"]
             return redirect("/")
@@ -280,6 +283,29 @@ def status_usuario(idUsuario):
     else:
         flash("Erro na Alteração do Status")
     return redirect("/dashboard")
+
+
+@app.route("/usuario/excluir/<int:idUsuario>")
+def excluir_usuario(idUsuario):
+    if not session or "admin" not in session:
+        return redirect("/")
+    
+    sucesso = delete_usuario(idUsuario)
+    
+    if sucesso:
+        flash("Usuário Excluído com Sucesso")
+    else:
+        flash("Erro na Exclusão do Usuário")
+    return redirect("/dashboard")
+
+
+# @app.route('/curtir/<int:idPost>', methods=['POST'])
+# def curtir(idPost):
+#     if curtir_post(idPost):
+#         print(f"Post {idPost} recebeu uma curtida!")
+#     else:
+#         print(f"Erro ao curtir o post {idPost}")
+#     return redirect(url_for('index'))
 
 
 # ERRO 404

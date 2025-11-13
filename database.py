@@ -20,7 +20,7 @@ def listar_post():
         with conectar() as conexao:
             cursor = conexao.cursor(dictionary=True)
             cursor.execute(
-                "SELECT p.*,u.user, u.fotoUsuario FROM post p INNER JOIN usuario u ON u.idUsuario = p.idUsuario ORDER BY idPost DESC"
+                "SELECT p.*,u.user, u.fotoUsuario FROM post p INNER JOIN usuario u ON u.idUsuario = p.idUsuario WHERE u.ativo = 1 ORDER BY idPost DESC"
             )
             return cursor.fetchall()
     except mysql.connector.Error as erro:
@@ -114,6 +114,18 @@ def alterar_status(idUsuario):
     except mysql.connector.Error as erro:
         print(f"Erro de BD! \n Erro: {erro}")
         return False, None
+    
+def delete_usuario(idUsuario):
+    try:
+        with conectar() as conexao:
+            cursor = conexao.cursor(dictionary=True)
+            sql = "DELETE FROM usuario WHERE idUsuario = %s;"
+            cursor.execute(sql, (idUsuario,))
+            conexao.commit()
+            return True
+    except mysql.connector.Error as erro:
+        print(f"Erro de BD! \n Erro: {erro}")
+        return False, None
 
 def listar_posts_por_usuario(idUsuario):
     try:
@@ -131,3 +143,32 @@ def listar_posts_por_usuario(idUsuario):
     except mysql.connector.Error as erro:
         print(f"Erro ao listar posts do usuário {idUsuario}: {erro}")
         return []
+
+
+# def buscar_curtidas(idPost):
+#     try:
+#         with conectar() as conexao:
+#             cursor = conexao.cursor(dictionary=True)
+#             sql = "SELECT curtidas FROM post WHERE idPost = %s"
+#             cursor.execute(sql, (idPost,))
+#             resultado = cursor.fetchone()
+#             if resultado:
+#                 return resultado['curtidas']
+#             else:
+#                 return 0
+#     except mysql.connector.Error as erro:
+#         print(f"Erro ao buscar curtidas: {erro}")
+#         return 0
+
+
+# def curtir_post(idPost):
+#     try:
+#         with conectar() as conexao:
+#             cursor = conexao.cursor()
+#             sql = "UPDATE post SET curtidas = curtidas + 1 WHERE idPost = %s"
+#             cursor.execute(sql, (idPost,))
+#             conexao.commit()
+#             return True
+#     except mysql.connector.Error as erro:
+#         print(f"Erro ao curtir post: {erro}")
+#         return False

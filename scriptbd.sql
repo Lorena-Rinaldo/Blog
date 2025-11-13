@@ -18,8 +18,19 @@ CREATE TABLE post(
     conteudo TEXT NOT NULL,
     dataPost TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     idUsuario INT,
-    FOREIGN KEY (idUsuario) REFERENCES usuario(idUsuario)
+    FOREIGN KEY (idUsuario) REFERENCES usuario(idUsuario) ON DELETE CASCADE
 );
 
 ALTER TABLE usuario
 ADD ativo BOOLEAN NOT NULL DEFAULT 1;
+
+
+-- CREATE TABLE curtida (
+--     idCurtida INT PRIMARY KEY AUTO_INCREMENT,
+--     idUsuario INT,
+--     idPost INT,
+--     dataCurtida TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--     FOREIGN KEY (idUsuario) REFERENCES usuario(idUsuario),
+--     FOREIGN KEY (idPost) REFERENCES post(idPost)
+-- );
+

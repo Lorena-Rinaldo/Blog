@@ -7,7 +7,7 @@
     color: #080D26;
     padding: 2em;
     border-radius: 5px;
-    border: 1px solid #FF3460;
+    border: 1px solid var(--cor-secundaria);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     opacity: 0;

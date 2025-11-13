@@ -118,7 +118,7 @@
             transition: border-color 0.3s;
 
             &:focus {
-                border-color: var(--cor-secundaria);
+                border-color: var(--azul-purpura);
                 outline: none;
             }
         }

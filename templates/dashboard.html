@@ -24,7 +24,7 @@
                 </tr>
                 {% for u in usuarios %}
                 <tr {% if u.ativo == 0 %} style="background-color: lightgray; text-decoration: line-through;" {% endif %}>
-                    <td><a href="/usuario/excluir/{{u.idUsuario}}"><i class="fa-solid fa-trash"></i></a></td>
+                    <td><a href="/usuario/excluir/{{u.idUsuario}}" onclick="return confirm('Deseja realmente excluir?')"><i class="fa-solid fa-trash"></i></a></td>
                     <td>{{u.idUsuario}}</td>
                     <td>{{u.nomeUsuario}}</td>
                     <td>{{u.user}}</td>
