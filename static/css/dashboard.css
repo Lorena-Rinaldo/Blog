@@ -1,72 +1,190 @@
 #dashboard {
     width: 95%;
     max-width: 1200px;
-    margin: 20px auto;
+    margin: 30px auto;
     min-height: 80vh;
     display: flex;
     flex-direction: column;
+    border-radius: 12px;
+    gap: 25px;
+    box-shadow: var(--sombra-pesada);
+    background-color: var(--cor-post);
+    padding: 25px;
+}
+
+#dashboard #dados {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 12vh;
+    background-image: linear-gradient(135deg, var(--cor-secundaria) 0%, var(--hover-cor-secundaria) 100%);
+    color: var(--cor-post);
+    border-radius: 10px;
+    box-shadow: var(--sombra-media);
+    padding: 20px 25px;
+    justify-content: center;
+    align-items: flex-start;
+    font-size: 1.1em;
+}
+
+#dashboard #dados h3 {
+    margin: 0;
+    font-weight: 600;
+    color: var(--cor-post);
+    letter-spacing: 0.5px;
+}
+
+#dashboard #dados p {
+    margin: 5px 0 0 0;
+    opacity: 0.9;
+}
+
+#dashboard #info {
+    display: flex;
+    flex-direction: row;
+    border: none;
+    border-radius: 10px;
+    gap: 25px;
+    width: 100%;
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-bottom: 10px;
+}
+
+#dashboard #info .col-info {
+    flex: 1;
+    background-color: var(--cor-post);
+    border-radius: 10px;
+    box-shadow: var(--sombra-media);
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+#dashboard #info .col-info h3 {
+    text-align: center;
+    color: var(--cor-secundaria);
+    margin-top: 0;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--cor-secundaria);
+    font-size: 1.6em;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+}
+
+#dashboard #info .col-info p {
+    background-color: var(--cor-fundo);
+    padding: 12px 18px;
+    margin: 8px 0;
     border-radius: 8px;
-    gap: 20px;
+    color: var(--cor-texto-principal);
+    border: 1px solid var(--cor-borda);
+    font-size: 0.98em;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 
-    #dados {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        min-height: 10vh;
-        background-color: var(--cor-texto-principal);
-        border-radius: 8px;
-        box-shadow: var(--sombra-media);
-        padding: 15px;
-    }
+#dashboard #info .col-info p a {
+    text-decoration: none;
+    color: inherit;
+    margin-right: 10px;
+}
 
-    #info {
-        display: flex;
-        flex-direction: row;
-        border: 1px solid var(--cor-texto-secundaria);
-        border-radius: 8px;
-        gap: 20px;
-        width: 100%;
-        flex-grow: 1;
-        overflow-y: scroll;
+#dashboard #info .col-info p:hover {
+    background-color: var(--cor-borda);
+    box-shadow: var(--sombra-leve);
+    transform: translateY(-2px);
+    cursor: pointer;
+}
 
-        .col-info {
-            flex: 1;
-            background-color: var(--cor-fundo);
-            border-radius: 8px;
-            box-shadow: var(--sombra-media);
-            padding: 20px;
+#dashboard i {
+    color: var(--cor-secundaria);
+    font-size: 1.1em;
+    margin-right: 8px;
+    transition: color 0.2s ease-in-out;
+}
 
-            h3 {
-                text-align: center;
-                color: var(--cor-destaque);
-                margin-top: 0;
-                margin-bottom: 20px;
-                padding-bottom: 10px;
-                border-bottom: 2px solid var(--cor-destaque);
-            }
+#dashboard i:hover {
+    color: var(--hover-cor-secundaria);
+}
 
-            p {
-                background-color: var(--cor-primaria);
-                padding: 10px 15px;
-                margin: 10px 0;
-                border-radius: 5px;
-                color: var(--cor-texto-claro);
-                border: 1px solid var(--cor-borda);
-                font-size: 0.95em;
+#dashboard #info .col-info table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.9em;
+}
 
-                &:hover {
-                    background-color: rgba(100, 255, 218, 0.1);
-                    cursor: pointer;
-                }
-            }
-        }
-    }
-    
-    i{
-        color: var(--cor-principal);
+#dashboard #info .col-info th,
+#dashboard #info .col-info td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--cor-borda);
+    color: var(--cor-texto-principal);
+    text-align: center;
+}
 
-        &:hover{
-            color: var(--cor-secundaria);
-        }
-    }
+#dashboard #info .col-info th {
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto-principal);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#dashboard #info .col-info tr:hover {
+    background-color: var(--cor-fundo);
+}
+
+#dashboard #info .col-info td a {
+    text-decoration: none;
+    color: var(--cor-secundaria);
+    font-weight: 500;
+}
+
+#dashboard #info .col-info td a:hover {
+    text-decoration: underline;
+    color: var(--hover-cor-secundaria);
+}
+
+#dashboard #info .col-info button {
+    background-color: var(--azul-purpura);
+    color: var(--cor-post);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85em;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+    margin: 2px;
+    white-space: nowrap;
+}
+
+#dashboard #info .col-info button:hover {
+    background-color: #5C5CAF;
+    transform: translateY(-1px);
+}
+
+#dashboard #info .col-info button:active {
+    transform: translateY(0);
+}
+
+#dashboard #info .col-info td button {
+    background-color: var(--azul-lavanda);
+}
+
+#dashboard #info .col-info td button:hover {
+    background-color: #7d9ada;
+}
+
+#dashboard #info .col-info a button {
+    background-color: var(--azul-ceu);
+    color: var(--cor-principal);
+}
+
+#dashboard #info .col-info a button:hover {
+    background-color: #8acfe8;
 }

@@ -93,4 +93,41 @@ def verificar_usuario(usuario,senha):
             return False, None
     except mysql.connector.Error as erro:
         print(f"Erro de BD! \n Erro: {erro}")
-        return False, erro
+        return False, None
+    
+def alterar_status(idUsuario):
+    try:
+        with conectar() as conexao:
+            cursor = conexao.cursor(dictionary=True)
+            sql = "SELECT ativo FROM usuario WHERE idUsuario = %s;"
+            cursor.execute(sql, (idUsuario,))
+            status = cursor.fetchone()
+            
+            if status['ativo']:
+                sql = "UPDATE usuario SET ativo = 0 WHERE idUsuario = %s;"
+            else:
+                sql =  "UPDATE usuario SET ativo = 1 WHERE idUsuario = %s;"
+            
+            cursor.execute(sql, (idUsuario,))
+            conexao.commit()
+            return True
+    except mysql.connector.Error as erro:
+        print(f"Erro de BD! \n Erro: {erro}")
+        return False, None
+
+def listar_posts_por_usuario(idUsuario):
+    try:
+        with conectar() as conexao:
+            cursor = conexao.cursor(dictionary=True)
+            sql = """
+                SELECT p.*, u.user 
+                FROM post p
+                INNER JOIN usuario u ON u.idUsuario = p.idUsuario
+                WHERE p.idUsuario = %s
+                ORDER BY p.idPost DESC
+            """
+            cursor.execute(sql, (idUsuario,))
+            return cursor.fetchall()
+    except mysql.connector.Error as erro:
+        print(f"Erro ao listar posts do usuário {idUsuario}: {erro}")
+        return []

@@ -513,3 +513,9 @@ hr {
     font-size: 0.9em;
     color: var(--cor-texto-header);
 }
+
+.boas-vindas {
+    text-align: center;
+    font-size: large;
+    margin-left: 1em;
+}
