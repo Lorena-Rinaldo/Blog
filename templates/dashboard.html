@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
 {% block conteudo %}
 
+{% with msg = get_flashed_messages()|first %}
+{% if msg %}
+<div id="flashPopup" class="flash-message">
+    {{ msg }}
+</div>
+{% endif %}
+{% endwith %}
+
 <div id="dashboard">
     <div id="dados">
         <h2>
@@ -10,7 +18,7 @@
     <div id="info">
         <div class="col-info">
             <div>
-                <h3>Usuários({{total_usuarios[0]}})</h3>
+                <h3>Usuários({{total_usuarios[0] if total_usuarios else 0}})</h3>
             </div>
             <hr>
             <table>
@@ -33,11 +41,12 @@
                     <td>{{u.nomeUsuario}}</td>
                     <td>{{u.user}}</td>
                     <td>
-                        <button class="btn-reset-senha">Resetar Senha</button>
+                        <a href="/usuario/reset/{{u.idUsuario}}">
+                            <button class="btn-reset-senha">Resetar Senha</button>
+                        </a>
                     </td>
                     <td>{{ u.dataCadastro.strftime('%d/%m/%Y') }}</td>
                     <td>
-                        {# Removido o href, adicionado data-id-usuario e uma classe para JS #}
                         <button class="btn-ver-posts" data-id-usuario="{{ u.idUsuario }}">Ver Posts</button>
                     </td>
                     <td>
@@ -57,7 +66,7 @@
         </div>
         <div class="col-info">
             <div>
-                <h3>Posts ({{total_posts[0]}}) <span id="posts-filtrados-titulo"></span></h3>
+                <h3>Posts ({{total_posts[0] if total_posts else 0}}) <span id="posts-filtrados-titulo"></span></h3>
             </div>
             <hr>
             <div id="posts-container">

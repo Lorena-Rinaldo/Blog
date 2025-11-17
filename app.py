@@ -302,6 +302,18 @@ def excluir_usuario(idUsuario):
     return redirect("/dashboard")
 
 
+@app.route("/usuario/reset/<int:idUsuario>")
+def reset(idUsuario):
+    if "admin" not in session:
+        return redirect("/")
+    sucesso = reset_senha(idUsuario)
+    if sucesso:
+        flash("Senha Resetada com Sucesso")
+        return redirect('/dashboard')
+    else:
+        flash("Falha ao Resetar Senha")
+        return redirect('/dashboard')
+
 # @app.route('/curtir/<int:idPost>', methods=['POST'])
 # def curtir(idPost):
 #     if curtir_post(idPost):

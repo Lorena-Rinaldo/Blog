@@ -78,7 +78,6 @@ def adicionar_usuario(nome, user, senha):
             conexao.commit()
             return True, "ok"
     except mysql.connector.Error as erro:
-        conexao.rollback()
         print(f"Erro de BD! \n Erro: {erro}")
         return False, erro
 
@@ -185,7 +184,21 @@ def totais():
     except mysql.connector.Error as erro:
         print(f"Erro de BD! \n Erro: {erro}")
         return None, None
-
+    
+def reset_senha(idUsuario):
+    print("Entrou na função reset senha")
+    try:
+        with conectar() as conexao:
+            cursor = conexao.cursor(dictionary=True)
+            sql = "UPDATE usuario SET senha = '1234' WHERE idUsuario = %s"
+            print(f"Sql: {sql} - {idUsuario}")
+            cursor.execute(sql, (idUsuario,))
+            conexao.commit()
+            return True
+    except mysql.connector.Error as erro:
+        print(f"Erro de BD! \n Erro: {erro}")
+        conexao.rollback()
+        return False
 
 # def buscar_curtidas(idPost):
 #     try:
