@@ -34,7 +34,13 @@
                 <input type="text" name="user" id="user" placeholder="Usuário" value="" autocomplete="off" required>
 
                 <label for="senha">Senha:</label>
-                <input type="password" id="senha" name="senha" placeholder="Senha" value="" autocomplete="off" required>
+                <div class="container-senha">
+                    <input type="password" id="senha" name="senha" placeholder="Senha" value="" autocomplete="off"
+                        required>
+                    <button type="button" id="togglePassword" aria-label="Mostrar/Esconder Senha">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
 
                 <p>Já tem login? <a href="/login">Acesse agora</a></p>
 

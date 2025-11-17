@@ -110,14 +110,45 @@
             margin-bottom: -5px;
         }
 
+        .container-senha {
+            position: relative;
+            display: flex;
+            width: 100%;
+
+            input {
+                padding-right: 40px;
+            }
+
+            #togglePassword {
+                position: absolute;
+                right: 5px;
+                top: 20%;
+                transform: translateY(-50%);
+                background: none;
+                border: none;
+                cursor: pointer;
+                color: #868e96;
+                padding: 6px;
+                font-size: 16px;
+                transition: color 0.2s;
+                line-height: 1;
+                outline: none;
+
+                &:hover {
+                    color: var(--azul-purpura);
+                }
+            }
+        }
+
         input {
+            width: 100%;
             padding: 12px 15px;
             border: 1px solid #ced4da;
             border-radius: 6px;
             font-size: 16px;
             transition: border-color 0.3s;
 
-            &:focus {
+            container-senha &:focus {
                 border-color: var(--azul-purpura);
                 outline: none;
             }

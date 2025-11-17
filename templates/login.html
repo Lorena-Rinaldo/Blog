@@ -32,7 +32,13 @@
                     required>
 
                 <label for="senha">Senha:</label>
-                <input type="password" id="senha" name="senha" placeholder="Senha" value="" autocomplete="off" required>
+                <div class="container-senha">
+                    <input type="password" id="senha" name="senha" placeholder="Senha" value="" autocomplete="off"
+                        required>
+                    <button type="button" id="togglePassword" aria-label="Mostrar/Esconder Senha">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
 
                 <p>Não tem cadastro? <a href="/cadastro">Faça agora</a></p>
 

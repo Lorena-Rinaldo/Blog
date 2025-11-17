@@ -2,6 +2,7 @@ import mysql.connector
 
 from werkzeug.security import check_password_hash
 
+
 # Função para se conectar com o Banco de Dados SQL
 def conectar():
     conexao = mysql.connector.connect(
@@ -51,8 +52,10 @@ def adicionar_post(titulo, conteudo, idUsuario):
             conexao.commit()
             return True
     except mysql.connector.Error as erro:
+        conexao.rollback()
         print(f"Erro de BD! \n Erro: {erro}")
         return False
+
 
 def listar_usuarios():
     try:
@@ -75,26 +78,29 @@ def adicionar_usuario(nome, user, senha):
             conexao.commit()
             return True, "ok"
     except mysql.connector.Error as erro:
+        conexao.rollback()
         print(f"Erro de BD! \n Erro: {erro}")
         return False, erro
-    
-def verificar_usuario(usuario,senha):
+
+
+def verificar_usuario(usuario, senha):
     try:
         with conectar() as conexao:
             # O dictionary True, se não ativado, pegaria os atributo do BD por números, e não pelo nome( ex: idUsuario )
             cursor = conexao.cursor(dictionary=True)
             sql = "SELECT * FROM usuario WHERE user = %s;"
             # A vírgula sozinha é uma tupla, pois sem ela, o programa entende que é uma variável
-            cursor.execute(sql, (usuario,) )
+            cursor.execute(sql, (usuario,))
             usuario_encontrado = cursor.fetchone()
             if usuario_encontrado:
-                if check_password_hash(usuario_encontrado['senha'],senha):
+                if check_password_hash(usuario_encontrado["senha"], senha):
                     return True, usuario_encontrado
             return False, None
     except mysql.connector.Error as erro:
         print(f"Erro de BD! \n Erro: {erro}")
         return False, None
-    
+
+
 def alterar_status(idUsuario):
     try:
         with conectar() as conexao:
@@ -102,19 +108,21 @@ def alterar_status(idUsuario):
             sql = "SELECT ativo FROM usuario WHERE idUsuario = %s;"
             cursor.execute(sql, (idUsuario,))
             status = cursor.fetchone()
-            
-            if status['ativo']:
+
+            if status["ativo"]:
                 sql = "UPDATE usuario SET ativo = 0 WHERE idUsuario = %s;"
             else:
-                sql =  "UPDATE usuario SET ativo = 1 WHERE idUsuario = %s;"
-            
+                sql = "UPDATE usuario SET ativo = 1 WHERE idUsuario = %s;"
+
             cursor.execute(sql, (idUsuario,))
             conexao.commit()
             return True
     except mysql.connector.Error as erro:
+        conexao.rollback()
         print(f"Erro de BD! \n Erro: {erro}")
         return False, None
-    
+
+
 def delete_usuario(idUsuario):
     try:
         with conectar() as conexao:
@@ -124,8 +132,10 @@ def delete_usuario(idUsuario):
             conexao.commit()
             return True
     except mysql.connector.Error as erro:
+        conexao.rollback()
         print(f"Erro de BD! \n Erro: {erro}")
         return False, None
+
 
 def listar_posts_por_usuario(idUsuario):
     try:
@@ -144,6 +154,20 @@ def listar_posts_por_usuario(idUsuario):
         print(f"Erro ao listar posts do usuário {idUsuario}: {erro}")
         return []
 
+def atualizar_post(titulo,conteudo,idPost):
+        try:
+            with conectar() as conexao:
+                cursor = conexao.cursor()
+                # O trecho '(%s, %s, %s)' significa injeção de SQL
+                sql = "UPDATE post SET titulo=%s,conteudo=%s WHERE idPost = %s"
+                cursor.execute(sql, (titulo, conteudo, idPost))
+                conexao.commit()
+                return True
+        except mysql.connector.Error as erro:
+            conexao.rollback()
+            print(f"Erro de BD! \n Erro: {erro}")
+            return False
+    
 
 # def buscar_curtidas(idPost):
 #     try:
@@ -170,5 +194,6 @@ def listar_posts_por_usuario(idUsuario):
 #             conexao.commit()
 #             return True
 #     except mysql.connector.Error as erro:
+#         conexao.rollback()
 #         print(f"Erro ao curtir post: {erro}")
 #         return False

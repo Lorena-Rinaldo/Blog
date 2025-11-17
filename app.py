@@ -99,18 +99,13 @@ def editarpost(idPost):
         if not titulo or not conteudo:
             flash("Preencha todos os campos!")
             return redirect(f"/editarpost/{idPost}")
-        try:
-            with conectar() as conexao:
-                cursor = conexao.cursor()
-                # O trecho '(%s, %s, %s)' significa injeção de SQL
-                sql = "UPDATE post SET titulo=%s,conteudo=%s WHERE idPost = %s"
-                cursor.execute(sql, (titulo, conteudo, idPost))
-                conexao.commit()
-                return redirect("/")
-        except mysql.connector.Error as erro:
-            print(f"Erro de BD! \n Erro: {erro}")
-            flash("Ops! Tente mais tarde!")
-            redirect("/")
+
+        sucesso = atualizar_post(titulo, conteudo, idPost)
+        if sucesso:
+            flash("Post Atualizado com Sucesso")
+        else:
+            flash("Erro! Tente mais tarde")
+        return redirect("/")
 
 
 # Rota para Excluir Post
@@ -140,6 +135,7 @@ def excluirpost(idPost):
                 return redirect("/")
 
     except mysql.connector.Error as erro:
+        conexao.rollback()
         print(f"Erro de BD! \n Erro: {erro}")
         flash("Ops! Tente mais tarde!")
         return redirect("/")
@@ -289,9 +285,9 @@ def status_usuario(idUsuario):
 def excluir_usuario(idUsuario):
     if not session or "admin" not in session:
         return redirect("/")
-    
+
     sucesso = delete_usuario(idUsuario)
-    
+
     if sucesso:
         flash("Usuário Excluído com Sucesso")
     else:
