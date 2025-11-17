@@ -41,7 +41,8 @@
                     <td>{{u.nomeUsuario}}</td>
                     <td>{{u.user}}</td>
                     <td>
-                        <a href="/usuario/reset/{{u.idUsuario}}">
+                        <a href="/usuario/reset/{{u.idUsuario}}"
+                            onclick="return confirm('Deseja resetar a senha desse usuário?')">
                             <button class="btn-reset-senha">Resetar Senha</button>
                         </a>
                     </td>
@@ -66,7 +67,8 @@
         </div>
         <div class="col-info">
             <div>
-                <h3>Posts ({{total_posts[0] if total_posts else 0}}) <span id="posts-filtrados-titulo"></span></h3>
+                <h3>Posts ({{total_posts[0] if total_posts else 0}})</h3>
+                <span id="posts-filtrados-titulo"></span>
             </div>
             <hr>
             <div id="posts-container">

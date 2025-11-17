@@ -175,9 +175,17 @@ def login():
         # 2°, verifica se é um usuário cadastrado
         resultado, usuario_encontrado = verificar_usuario(usuario, senha)
         if resultado:
+
+            # Usuário bloqueado pelo ADM
             if usuario_encontrado["ativo"] == 0:
                 flash("Usuário Banido! Fale com o Suporte")
                 return redirect("/login")
+
+            # Usuário com senha resetada
+            if usuario_encontrado["senha"] == "1234":
+                session["idUsuario"] = usuario_encontrado["idUsuario"]
+                return render_template("nova_senha.html")
+
             session["idUsuario"] = usuario_encontrado["idUsuario"]
             session["user"] = usuario_encontrado["user"]
             return redirect("/")
@@ -309,10 +317,11 @@ def reset(idUsuario):
     sucesso = reset_senha(idUsuario)
     if sucesso:
         flash("Senha Resetada com Sucesso")
-        return redirect('/dashboard')
+        return redirect("/dashboard")
     else:
         flash("Falha ao Resetar Senha")
-        return redirect('/dashboard')
+        return redirect("/dashboard")
+
 
 # @app.route('/curtir/<int:idPost>', methods=['POST'])
 # def curtir(idPost):

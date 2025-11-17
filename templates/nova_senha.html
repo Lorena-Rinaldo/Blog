@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+
+{% with msg = get_flashed_messages()|first %}
+{% if msg %}
+<div id="flashPopup" class="flash-message">
+    {{ msg }}
+</div>
+{% endif %}
+{% endwith %}
+
+<div class="resetar-senha">
+    <div class="container-senha">
+        <div class="form-resetar">
+            <form action="/usuario/novasenha" method="POST">
+                <label for="senha">Nova Senha:</label>
+                <div class="container-senha">
+                    <input type="password" id="senha" name="senha" placeholder="Senha" value="" autocomplete="off"
+                        required>
+                    <button type="button" id="togglePassword" aria-label="Mostrar/Esconder Senha">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+
+                <label for="senha">Confirmar Senha:</label>
+                <div class="container-senha">
+                    <input type="password" id="senha" name="senha" placeholder="Senha" value="" autocomplete="off"
+                        required>
+                    <button type="button" id="togglePassword" aria-label="Mostrar/Esconder Senha">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+
+                <button type="submit">Salvar</button>
+                <a href="/">
+                    <button type="submit">Cancelar</button>
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
