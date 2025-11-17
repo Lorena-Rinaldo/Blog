@@ -23,8 +23,9 @@
     box-shadow: var(--sombra-media);
     padding: 20px 25px;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     font-size: 1.1em;
+    text-align: center;
 }
 
 #dashboard #dados h3 {

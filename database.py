@@ -154,20 +154,38 @@ def listar_posts_por_usuario(idUsuario):
         print(f"Erro ao listar posts do usuário {idUsuario}: {erro}")
         return []
 
-def atualizar_post(titulo,conteudo,idPost):
-        try:
-            with conectar() as conexao:
-                cursor = conexao.cursor()
-                # O trecho '(%s, %s, %s)' significa injeção de SQL
-                sql = "UPDATE post SET titulo=%s,conteudo=%s WHERE idPost = %s"
-                cursor.execute(sql, (titulo, conteudo, idPost))
-                conexao.commit()
-                return True
-        except mysql.connector.Error as erro:
-            conexao.rollback()
-            print(f"Erro de BD! \n Erro: {erro}")
-            return False
-    
+
+def atualizar_post(titulo, conteudo, idPost):
+    try:
+        with conectar() as conexao:
+            cursor = conexao.cursor()
+            # O trecho '(%s, %s, %s)' significa injeção de SQL
+            sql = "UPDATE post SET titulo=%s,conteudo=%s WHERE idPost = %s"
+            cursor.execute(sql, (titulo, conteudo, idPost))
+            conexao.commit()
+            return True
+    except mysql.connector.Error as erro:
+        conexao.rollback()
+        print(f"Erro de BD! \n Erro: {erro}")
+        return False
+
+
+def totais():
+    try:
+        with conectar() as conexao:
+            cursor = conexao.cursor()
+            cursor.execute("SELECT * FROM vw_total_posts")
+            total_posts = cursor.fetchone()
+
+            cursor.execute("SELECT * FROM vw_total_usuarios")
+            total_usuarios = cursor.fetchone()
+
+            return total_posts, total_usuarios
+
+    except mysql.connector.Error as erro:
+        print(f"Erro de BD! \n Erro: {erro}")
+        return None, None
+
 
 # def buscar_curtidas(idPost):
 #     try:

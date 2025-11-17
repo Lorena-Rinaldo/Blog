@@ -197,11 +197,18 @@ def dashboard():
 
     usuarios = listar_usuarios()
     posts = listar_post()  # Carrega todos os posts inicialmente para a coluna de posts
+    total_posts, total_usuarios = totais()
 
     for post in posts:
         post["conteudo_resumo"] = truncar_conteudo(post["conteudo"], limite=50)
 
-    return render_template("dashboard.html", posts=posts, usuarios=usuarios)
+    return render_template(
+        "dashboard.html",
+        posts=posts,
+        usuarios=usuarios,
+        total_posts=total_posts,
+        total_usuarios=total_usuarios,
+    )
 
 
 @app.route("/api/posts_por_usuario/<int:idUsuario>")

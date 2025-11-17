@@ -3,12 +3,14 @@
 
 <div id="dashboard">
     <div id="dados">
-
+        <h2>
+            Área do ADM
+        </h2>
     </div>
     <div id="info">
         <div class="col-info">
             <div>
-                <h3>Usuários</h3>
+                <h3>Usuários({{total_usuarios[0]}})</h3>
             </div>
             <hr>
             <table>
@@ -23,8 +25,10 @@
                     <th>Status</th>
                 </tr>
                 {% for u in usuarios %}
-                <tr {% if u.ativo == 0 %} style="background-color: lightgray; text-decoration: line-through;" {% endif %}>
-                    <td><a href="/usuario/excluir/{{u.idUsuario}}" onclick="return confirm('Deseja realmente excluir?')"><i class="fa-solid fa-trash"></i></a></td>
+                <tr {% if u.ativo==0 %} style="background-color: lightgray; text-decoration: line-through;" {% endif %}>
+                    <td><a href="/usuario/excluir/{{u.idUsuario}}"
+                            onclick="return confirm('Deseja realmente excluir?')"><i class="fa-solid fa-trash"></i></a>
+                    </td>
                     <td>{{u.idUsuario}}</td>
                     <td>{{u.nomeUsuario}}</td>
                     <td>{{u.user}}</td>
@@ -53,10 +57,10 @@
         </div>
         <div class="col-info">
             <div>
-                <h3>Posts <span id="posts-filtrados-titulo"></span></h3>
+                <h3>Posts ({{total_posts[0]}}) <span id="posts-filtrados-titulo"></span></h3>
             </div>
             <hr>
-            <div id="posts-container"> 
+            <div id="posts-container">
                 {% for p in posts %}
                 <p>
                     <a href="/excluirpost/{{p.idPost}}" onclick="return confirm('Deseja realmente excluir?')">
@@ -71,60 +75,5 @@
         </div>
     </div>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const verPostsButtons = document.querySelectorAll('.btn-ver-posts');
-        const postsContainer = document.getElementById('posts-container');
-        const postsTituloSpan = document.getElementById('posts-filtrados-titulo');
-
-        // NOVA FUNÇÃO: Auxiliar para criar o HTML de um post
-        function createPostElement(post) {
-            const postElement = document.createElement('p');
-            postElement.innerHTML = `
-                <a href="/excluirpost/${post.idPost}" onclick="return confirm('Deseja realmente excluir?')">
-                    <i class="fa-solid fa-trash"></i>
-                </a>
-                ${post.idPost} - ${post.titulo} - ${post.conteudo_resumo}
-            `;
-            return postElement;
-        }
-
-        verPostsButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const userId = this.dataset.idUsuario;
-                // NOVA LINHA: Pega o nome de usuário para o título
-                const userName = this.closest('tr').querySelector('td:nth-child(4)').textContent.trim();
-
-                // ATUALIZADO: Usando o nome do usuário no título
-                postsTituloSpan.textContent = ` (Usuário: ${userName})`;
-                postsContainer.innerHTML = '<p>Carregando posts...</p>'; // Indicador de carregamento
-
-                fetch(`/api/posts_por_usuario/${userId}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Erro na rede ou o servidor não retornou 200 OK');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        postsContainer.innerHTML = ''; // Limpa o conteúdo atual
-
-                        if (data.posts && data.posts.length > 0) {
-                            data.posts.forEach(post => {
-                                postsContainer.appendChild(createPostElement(post)); // Usa a nova função
-                            });
-                        } else {
-                            postsContainer.innerHTML = '<p>Nenhum post disponível para este usuário!</p>';
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Erro ao buscar posts:', error);
-                        postsContainer.innerHTML = '<p>Erro ao carregar posts. Tente novamente.</p>';
-                    });
-            });
-        });
-    });
-</script>
 
 {% endblock %}
