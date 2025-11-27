@@ -3,38 +3,76 @@
 
 {% with msg = get_flashed_messages()|first %}
 {% if msg %}
-<div id="flashPopup" class="flash-message">
+<div id="flashPopup"
+    class="fixed bottom-5 right-5 z-[1000] w-[16em] p-8 text-center bg-cor-fundo text-cor-principal border border-cor-secundaria rounded-[5px] shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-opacity duration-500 ease-in-out opacity-0 [&.show]:opacity-100">
     {{ msg }}
 </div>
 {% endif %}
 {% endwith %}
 
-<div class="resetar-senha">
-    <div class="container-senha">
-        <div class="form-resetar">
-            <div>
-                <h3>Atualizar Senha</h3>
+<!-- Wrapper Principal (.resetar-senha) -->
+<div class="flex w-full h-[80vh] justify-center items-center bg-[#f0f2f5]">
+
+    <!-- Card Container (.container-senha) -->
+    <!-- Ajustei para w-[90%] no mobile e w-[30%] no desktop para não ficar minusculo no celular -->
+    <div
+        class="flex flex-col w-[90%] md:w-[30%] bg-white rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] overflow-hidden font-sans">
+
+        <!-- Área do Formulário (.form-resetar) -->
+        <div class="flex flex-col justify-center items-center w-full p-10">
+
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-azul-purpura">Atualizar Senha</h2>
             </div>
-            <form action="/usuario/novasenha" method="POST">
-                <label for="senha">Nova Senha:</label>
-                <div class="input-wrapper">
-                    <input type="password" id="senha" name="senha" placeholder="Senha" required>
-                    <button type="button" onclick="togglePass(this)"><i class="fas fa-eye"></i></button>
+
+            <form action="/usuario/novasenha" method="POST" class="flex flex-col w-full gap-4">
+
+                <!-- Campo Nova Senha -->
+                <div class="w-full">
+                    <label for="senha" class="block text-sm font-semibold text-[#343a40] mb-1">Nova Senha:</label>
+                    <div class="relative flex w-full items-center">
+                        <input type="password" id="senha" name="senha" placeholder="Senha" required
+                            class="w-full p-3 pr-10 border border-[#ced4da] rounded-md text-base transition duration-300 focus:outline-none focus:border-azul-purpura focus:ring-1 focus:ring-azul-purpura">
+
+                        <button type="button" onclick="togglePass(this)" aria-label="Ver Senha"
+                            class="absolute right-2 top-1/2 -translate-y-1/2 text-[#868e96] p-2 hover:text-azul-purpura transition-colors bg-transparent border-none cursor-pointer flex items-center justify-center z-10 outline-none">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
                 </div>
 
-                <label for="senha">Confirmar Senha:</label>
-                <div class="input-wrapper">
-                    <input type="password" id="senha" name="senha" placeholder="Senha" required>
-                    <button type="button" onclick="togglePass(this)"><i class="fas fa-eye"></i></button>
+                <!-- Campo Confirmar Senha -->
+                <div class="w-full">
+                    <label for="confirmacao" class="block text-sm font-semibold text-[#343a40] mb-1">Confirmar
+                        Senha:</label>
+                    <div class="relative flex w-full items-center">
+                        <input type="password" id="confirmacao" name="confirmacao" placeholder="Senha" required
+                            class="w-full p-3 pr-10 border border-[#ced4da] rounded-md text-base transition duration-300 focus:outline-none focus:border-azul-purpura focus:ring-1 focus:ring-azul-purpura">
+
+                        <button type="button" onclick="togglePass(this)" aria-label="Ver Senha"
+                            class="absolute right-2 top-1/2 -translate-y-1/2 text-[#868e96] p-2 hover:text-azul-purpura transition-colors bg-transparent border-none cursor-pointer flex items-center justify-center z-10 outline-none">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
                 </div>
 
-                <div class="botoes-acao">
-                    <a href="/" class="link-cancelar">
-                        <button type="button" class="btn-cancelar">Cancelar</button>
+                <!-- Botões de Ação (.botoes-acao) -->
+                <div class="flex flex-row w-full gap-3 mt-5">
+                    <!-- Botão Cancelar (Cinza) -->
+                    <a href="/" class="flex-1 no-underline">
+                        <button type="button"
+                            class="w-full p-3 bg-[#6c757d] text-white font-bold rounded-md hover:bg-[#5a6268] transition-colors duration-300 cursor-pointer border-none text-base">
+                            Cancelar
+                        </button>
                     </a>
 
-                    <button type="submit" class="btn-salvar">Salvar</button>
+                    <!-- Botão Salvar (Azul Púrpura, Flex 2 para ser maior) -->
+                    <button type="submit"
+                        class="flex-[2] p-3 bg-azul-purpura text-white font-bold rounded-md hover:bg-azul-lavanda transition-colors duration-300 cursor-pointer border-none text-base shadow-sm">
+                        Salvar
+                    </button>
                 </div>
+
             </form>
         </div>
     </div>

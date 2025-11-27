@@ -3,46 +3,74 @@
 
 {% with msg = get_flashed_messages()|first %}
 {% if msg %}
-<div id="flashPopup" class="flash-message">
+<div id="flashPopup"
+    class="fixed bottom-5 right-5 z-[1000] w-[16em] p-8 text-center bg-cor-fundo text-cor-principal border border-cor-secundaria rounded-[5px] shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-opacity duration-500 ease-in-out opacity-0 [&.show]:opacity-100">
     {{ msg }}
 </div>
 {% endif %}
 {% endwith %}
 
-<div class="login">
-    <div class="container-login">
-        <div class="tagline-login">
-            <div class="logo">
-                <a href="/">
-                    <img src="../static/img/logo.png" alt="Logo do Blog">
-                    <h1>Foxmood</h1>
+<div class="flex w-full h-[80vh] justify-center items-center bg-[#f0f2f5]">
+
+    <div
+        class="flex flex-row h-[70%] w-[70%] bg-white rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] overflow-hidden font-sans">
+
+        <!-- LADO ESQUERDO -->
+        <div
+            class="hidden md:flex flex-col w-[55%] bg-gradient-to-br from-azul-purpura via-azul-lavanda to-azul-purpura text-white p-10 justify-start items-center text-center gap-5 relative">
+
+            <div class="flex justify-center items-center gap-2">
+                <a href="/"
+                    class="flex flex-row items-center justify-center no-underline text-cor-header hover:opacity-90 transition">
+                    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="w-[50px] h-auto mr-2">
+                    <h1 class="text-2xl font-bold">Foxmood</h1>
                 </a>
             </div>
-            <div class="tagline">
-                <h3>SUA PRÓXIMA GRANDE IDEIA ESPERA POR VOCÊ. FAÇA LOGIN E INSPIRE-SE.</h3>
+
+            <div class="flex w-full justify-center items-center mt-10">
+                <h3 class="text-2xl lg:text-3xl xl:text-4xl font-bold leading-tight max-w-lg">
+                    SUA PRÓXIMA GRANDE IDEIA ESPERA POR VOCÊ. FAÇA LOGIN E INSPIRE-SE.
+                </h3>
             </div>
-            <div class="tagline-linha">
-                <hr>
+
+            <div class="flex justify-end items-end mt-auto w-full">
+                <hr class="w-full h-px bg-cor-borda border-none opacity-50">
             </div>
         </div>
-        <div class="form-login">
-            <form action="/login" method="POST">
-                <label for="email">Login:</label>
-                <input type="text" name="user" id="user" placeholder="Nome de Usuário" value="" autocomplete="off"
-                    required>
 
-                <label for="senha">Senha:</label>
-                <div class="container-senha">
-                    <input type="password" id="senha" name="senha" placeholder="Senha" value="" autocomplete="off"
-                        required>
-                    <button type="button" id="togglePassword" aria-label="Mostrar/Esconder Senha">
-                        <i class="fas fa-eye"></i>
-                    </button>
+        <!-- LADO DIREITO -->
+        <div class="flex flex-col justify-center items-center w-full md:w-[45%] p-10">
+            <form action="/login" method="POST" class="flex flex-col w-full gap-4 items-center">
+
+                <div class="w-full">
+                    <label for="user" class="block text-sm font-bold text-[#343a40] mb-1 ml-1">Login:</label>
+                    <input type="text" name="user" id="user" placeholder="Nome de Usuário" autocomplete="off" required
+                        class="w-full p-3 border border-[#ced4da] rounded-md text-base transition focus:outline-none focus:border-azul-purpura focus:ring-1 focus:ring-azul-purpura">
                 </div>
 
-                <p>Não tem cadastro? <a href="/cadastro">Faça agora</a></p>
+                <div class="w-full">
+                    <label for="senha" class="block text-sm font-bold text-[#343a40] mb-1 ml-1">Senha:</label>
+                    <div class="relative flex w-full">
+                        <input type="password" id="senha" name="senha" placeholder="Senha" autocomplete="off" required
+                            class="w-full p-3 pr-10 border border-[#ced4da] rounded-md text-base transition focus:outline-none focus:border-azul-purpura focus:ring-1 focus:ring-azul-purpura">
 
-                <button type="submit">Entrar</button>
+                        <button type="button" id="togglePassword" aria-label="Ver Senha"
+                            class="absolute right-2 top-1/2 -translate-y-1/2 text-[#868e96] p-2 hover:text-azul-purpura transition focus:outline-none bg-transparent border-none cursor-pointer">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <p class="text-sm text-center mt-2 font-medium">
+                    Não tem cadastro? <a href="/cadastro"
+                        class="text-azul-purpura font-bold hover:text-azul-lavanda transition-colors no-underline">Faça
+                        agora</a>
+                </p>
+
+                <button type="submit"
+                    class="mt-4 w-full p-3 bg-azul-purpura text-white font-bold rounded-md hover:bg-azul-lavanda transition-colors duration-300 shadow-sm cursor-pointer border-none text-base">
+                    Entrar
+                </button>
             </form>
         </div>
     </div>

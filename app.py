@@ -352,8 +352,25 @@ def novasenha():
         else:
             flash('Erro na Atualização de Nova Senha!')
             return render_template('/nova_senha.html')
+        
+@app.route('/perfil', methods=['GET','POST'])
+def perfil():
+    if 'user' not in session:
+        return redirect('/')
+    if request.method == 'GET':
+        lista_usuarios = listar_usuarios()
+        usuario = None
+        for u in lista_usuarios:
+            if u['idUsuario'] == session['idUsuario']:
+                usuario = u
+                break
+            
+        return render_template('perfil.html', 
+                               nome=usuario['nome'],
+                               user=usuario['user'],
+                               foto=usuario['foto'])
 
-# @app.route('/curtir/<int:idPost>', methods=['POST'])
+# @app.rojute('/curtir/<int:idPost>', methods=['POST'])
 # def curtir(idPost):
 #     if curtir_post(idPost):
 #         print(f"Post {idPost} recebeu uma curtida!")

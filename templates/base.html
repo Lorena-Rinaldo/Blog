@@ -6,15 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog Foxmood</title>
 
-    <link rel="stylesheet" href="../static/css/style.css">
-    <link rel="stylesheet" href="../static/css/flashmessage.css">
-    <link rel="stylesheet" href="../static/css/curtidas.css">
-    <link rel="stylesheet" href="../static/css/login_cadastro.css">
-    <link rel="stylesheet" href="../static/css/dashboard.css">
-    <link rel="stylesheet" href="../static/css/erros.css">
-    <link rel="stylesheet" href="../static/css/nova_senha.css">
+    <!-- Importando a Fonte Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+        rel="stylesheet">
 
-    <!-- Ícones da Font Awesome para o botão de tema e outros -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMD/CDQz6ESV6/P79qDydo5YjWkK9p5/T6Bw3t/35p3D6uK1OQ2h8t2a/l3i6GqQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -26,122 +21,291 @@
     <script src="../static/js/dashboard.js"></script>
     <script src="../static/js/login_cadastro.js"></script>
 
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Configuração do Tema e Animação -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'cor-principal': '#080D26',
+                        'cor-secundaria': '#FF3460',
+                        'cor-post': '#FFFFFF',
+                        'cor-fundo': '#F9F9F9',
+                        'cor-borda': 'rgba(240, 240, 240, 0.9)',
+                        'cor-texto-principal': '#333333',
+                        'cor-texto-secundaria': '#6B7280',
+                        'cor-texto-header': '#efefef',
+                        'hover-cor-secundaria': '#ff0037',
+                        'azul-ceu': '#A0E2FF',
+                        'azul-lavanda': '#99B9F0',
+                        'azul-purpura': '#6C6CEF',
+                    },
+                    fontFamily: {
+                        'sans': ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    // Adicionando a animação para o menu
+                    keyframes: {
+                        'fade-in-down': {
+                            '0%': {
+                                opacity: '0',
+                                transform: 'translateY(-10px)'
+                            },
+                            '100%': {
+                                opacity: '1',
+                                transform: 'translateY(0)'
+                            },
+                        }
+                    },
+                    animation: {
+                        'fade-in-down': 'fade-in-down 0.3s ease-out',
+                    }
+                }
+            }
+        }
+    </script>
+
     <link rel="shortcut icon" type="imagex/png" href="../static/img/logo.png">
+
+    <!-- Estilos globais -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
+        }
+        
+        @layer components {
+            .btn-nav {
+                @apply text-cor-texto-header px-4 py-2 border-2 border-cor-texto-header rounded-lg font-semibold transition-all duration-300 hover:bg-cor-texto-header hover:text-cor-principal no-underline;
+            }
+            
+            .card-post {
+                @apply w-[90%] min-h-[200px] bg-cor-post rounded-[10px] border-2 border-cor-borda mb-2 transition-colors duration-300 shadow-sm;
+            }
+        }
+    </style>
 </head>
 
-<body>
-    <header>
+<body
+    class="font-sans min-h-screen flex flex-col bg-cor-fundo text-cor-texto-principal transition-colors duration-300 select-none scrollbar-hide">
+
+    <!-- HEADER -->
+    <header
+        class="bg-cor-principal text-cor-texto-header flex flex-row justify-between items-center py-5 px-[5%] shadow-md transition-colors duration-300 z-50">
+
         <!-- LOGO (CENTRO) -->
-        <div class="logo">
-            <a href="/">
-                <img src="../static/img/logo.png" alt="Logo do Blog">
-                <h1>Foxmood</h1>
+        <div class="flex justify-center items-center gap-2">
+            <a href="/" class="flex flex-row items-center justify-center no-underline text-cor-texto-header group">
+                <img src="../static/img/logo.png" alt="Logo do Blog"
+                    class="w-[50px] h-auto mr-2 group-hover:opacity-90 transition-opacity">
+                <h1 class="text-[1.8em] font-bold">Foxmood</h1>
             </a>
         </div>
 
-        <!-- COLUNA ESQUERDA: Navegação e Toggle de Tema -->
-        <div class="header-esquerda">
-
+        <!-- COLUNA ESQUERDA -->
+        <div class="flex flex-row items-center gap-6 w-1/4 min-w-fit header-esquerda">
+            <!-- Conteúdo injetado via JS ou vazio -->
         </div>
 
-        <div class="header-direita">
-            <nav>
+        <!-- COLUNA DIREITA -->
+        <div class="flex flex-row items-center justify-end gap-6 w-1/4 min-w-fit header-direita">
+            <nav class="flex gap-4 items-center">
                 {% if 'user' in session or 'admin' in session %}
+
+                <!-- Botão Dashboard (Apenas Admin) -->
                 {% if 'admin' in session %}
-                <a href="/dashboard">ÁREA ADM</a>
+                <a href="/dashboard" class="btn-nav">ÁREA ADM</a>
                 {% endif %}
-                <a href="/logout">SAIR</a>
+
+                <!-- MENU DROPDOWN DO PERFIL -->
+                <div class="relative">
+                    <!-- Imagem clicável (Gatilho) -->
+                    <button onclick="toggleProfileMenu()"
+                        class="flex items-center focus:outline-none transition-transform active:scale-95">
+                        <img src="{{ url_for('static', filename='uploads/foto-user-1.png') }}" alt="Avatar"
+                            class="h-10 w-10 md:h-12 md:w-12 rounded-full object-cover border-2 border-cor-borda hover:border-cor-secundaria transition-colors">
+                    </button>
+
+                    <!-- As Opções (Inicialmente ocultas) -->
+                    <div id="profileDropdown"
+                        class="hidden absolute right-0 top-14 bg-cor-post border border-cor-borda min-w-[180px] shadow-lg rounded-md z-50 overflow-hidden animate-fade-in-down flex flex-col">
+
+                        <!-- Opção: Editar Perfil -->
+                        <a href="/perfil"
+                            class="block px-4 py-3 text-sm text-cor-texto-principal hover:bg-cor-fundo transition-colors border-b border-cor-borda text-left no-underline">
+                            <i class="fa-solid fa-user-pen mr-2 text-azul-purpura"></i> Editar Perfil
+                        </a>
+
+                        <!-- Opção: Sair -->
+                        <a href="/logout"
+                            class="block px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors text-left no-underline">
+                            <i class="fa-solid fa-right-from-bracket mr-2"></i> Sair
+                        </a>
+                    </div>
+                </div>
+                <!-- FIM DO MENU DROPDOWN -->
+
                 {% else %}
-                <a href="/login">ENTRAR</a>
-                <a href="/cadastro">COMECE AGORA</a>
+                <a href="/login" class="btn-nav">ENTRAR</a>
+                <a href="/cadastro" class="btn-nav">COMECE AGORA</a>
                 {% endif %}
             </nav>
         </div>
     </header>
 
-    <main>
+    <!-- MAIN -->
+    <main class="flex-1 min-h-[80vh] w-full">
         {% block conteudo %}{% endblock %}
     </main>
 
-    <footer>
-        <section class="midias-sociais">
-            <div class="midia-titulo">
-                <h2>Fique conectado(a) em nossas redes sociais!</h2>
+    <!-- FOOTER -->
+    <footer
+        class="min-h-[10vh] bg-cor-principal text-cor-texto-header flex flex-col items-center py-5 transition-colors duration-300">
+
+        <!-- Mídias Sociais -->
+        <section class="flex flex-wrap justify-between items-center w-[90%] max-w-[1200px] py-5 gap-4">
+            <div class="flex items-center justify-start flex-1 min-w-[250px]">
+                <h2 class="text-xl text-left m-0 text-cor-texto-header font-semibold">Fique conectado(a) em nossas redes
+                    sociais!</h2>
             </div>
-            <div class="icones-sociais">
-                <a href="https://github.com/Lorena-Rinaldo" target="_blank" class="github" target="_blank"
-                    rel="noopener noreferrer"><i class="fab fa-github"></i></a>
-                <a href="https://www.linkedin.com/in/lorena-rinaldo01" target="_blank" class="linkedin" target="_blank"
-                    rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#" class="whatsapp"><i class="fab fa-whatsapp"></i></a>
-                <a href="#" class="instagram"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="youtube"><i class="fab fa-youtube"></i></a>
-            </div>
-        </section>
-        <hr>
-        <section class="footer-info">
-            <div class="info">
-                <h3>Empresa</h3>
-                <hr>
-                <div class="topicos">
-                    <a href="#">Sobre Nós</a>
-                </div>
-                <div class="topicos">
-                    <a href="#">Nossa Missão</a>
-                </div>
-                <div class="topicos">
-                    <a href="#">Valores</a>
-                </div>
-            </div>
-            <div class="info">
-                <h3>Produtos</h3>
-                <hr>
-                <div class="topicos">
-                    <a href="#">Visão Geral</a>
-                </div>
-                <div>
-                    <a href="#">Recursos/Funcionalidades</a>
-                </div>
-                <div>
-                    <a href="#">Integração</a>
-                </div>
-            </div>
-            <div class="info">
-                <h3>Links Úteis</h3>
-                <hr>
-                <div class="topicos">
-                    <a href="#">Política de Privacidade</a>
-                </div>
-                <div class="topicos">
-                    <a href="#">Termos de Serviço/Uso</a>
-                </div>
-                <div class="topicos">
-                    <a href="#">FAQ (Perguntas Frequentes)</a>
-                </div>
-                <div class="topicos">
-                    <a href="#">Central de Ajuda/Suporte</a>
-                </div>
-            </div>
-            <div class="info">
-                <h3>Contato</h3>
-                <hr>
-                <div class="topicos">
-                    <a href="#">Fale Conosco</a>
-                </div>
-                <div class="topicos">
-                    <a href="#">Suporte Técnico</a>
-                </div>
-                <div class="topicos">
-                    <a href="#">Localização</a>
-                </div>
-                <div class="topicos">
-                    <a href="#">Horário de Atendimento</a>
-                </div>
+
+            <div class="flex justify-end items-center gap-4 text-[28px] flex-1 min-w-[200px]">
+                <a href="https://github.com/Lorena-Rinaldo" target="_blank" rel="noopener noreferrer"
+                    class="text-cor-texto-header transition-all duration-300 hover:scale-115 hover:text-white">
+                    <i class="fab fa-github"></i>
+                </a>
+
+                <a href="https://www.linkedin.com/in/lorena-rinaldo01" target="_blank" rel="noopener noreferrer"
+                    class="text-cor-texto-header transition-all duration-300 hover:scale-115 hover:text-[#0A66C2]">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+
+                <a href="#"
+                    class="text-cor-texto-header transition-all duration-300 hover:scale-115 hover:text-[#25D366]">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+
+                <a href="#"
+                    class="text-cor-texto-header transition-all duration-300 hover:scale-115 hover:text-transparent hover:bg-clip-text hover:bg-[radial-gradient(circle_at_30%_107%,#fdf497_0%,#fdf497_5%,#fd5949_45%,#d6249f_60%,#285AEB_90%)]">
+                    <i class="fab fa-instagram"></i>
+                </a>
+
+                <a href="#"
+                    class="text-cor-texto-header transition-all duration-300 hover:scale-115 hover:text-[#FF0000]">
+                    <i class="fab fa-youtube"></i>
+                </a>
             </div>
         </section>
-        <hr>
-        <section class="footer-direitos">©2025 - Lorena Rinaldo</section>
+
+        <hr class="w-full h-px border-none my-5 bg-cor-fundo opacity-20">
+
+        <!-- Informações -->
+        <section class="flex flex-wrap justify-around w-[90%] max-w-[1200px] mb-8 gap-5">
+            <!-- Bloco Empresa -->
+            <div class="flex-1 min-w-[180px] p-2 text-left">
+                <h3 class="text-lg mb-4 text-cor-texto-header font-bold">Empresa</h3>
+                <hr class="w-[50px] mb-4 border-none h-[2px] bg-cor-secundaria">
+                <div class="flex flex-col gap-1">
+                    <a href="#"
+                        class="text-cor-post text-[15px] block mb-1 hover:text-cor-secundaria hover:underline">Sobre
+                        Nós</a>
+                    <a href="#"
+                        class="text-cor-post text-[15px] block mb-1 hover:text-cor-secundaria hover:underline">Nossa
+                        Missão</a>
+                    <a href="#"
+                        class="text-cor-post text-[15px] block mb-1 hover:text-cor-secundaria hover:underline">Valores</a>
+                </div>
+            </div>
+
+            <!-- Bloco Produtos -->
+            <div class="flex-1 min-w-[180px] p-2 text-left">
+                <h3 class="text-lg mb-4 text-cor-texto-header font-bold">Produtos</h3>
+                <hr class="w-[50px] mb-4 border-none h-[2px] bg-cor-secundaria">
+                <div class="flex flex-col gap-1">
+                    <a href="#"
+                        class="text-cor-post text-[15px] block mb-1 hover:text-cor-secundaria hover:underline">Visão
+                        Geral</a>
+                    <a href="#"
+                        class="text-cor-post text-[15px] block mb-1 hover:text-cor-secundaria hover:underline">Recursos</a>
+                    <a href="#"
+                        class="text-cor-post text-[15px] block mb-1 hover:text-cor-secundaria hover:underline">Integração</a>
+                </div>
+            </div>
+
+            <!-- Bloco Links Úteis -->
+            <div class="flex-1 min-w-[180px] p-2 text-left">
+                <h3 class="text-lg mb-4 text-cor-texto-header font-bold">Links Úteis</h3>
+                <hr class="w-[50px] mb-4 border-none h-[2px] bg-cor-secundaria">
+                <div class="flex flex-col gap-1">
+                    <a href="#"
+                        class="text-cor-post text-[15px] block mb-1 hover:text-cor-secundaria hover:underline">Privacidade</a>
+                    <a href="#"
+                        class="text-cor-post text-[15px] block mb-1 hover:text-cor-secundaria hover:underline">Termos</a>
+                    <a href="#"
+                        class="text-cor-post text-[15px] block mb-1 hover:text-cor-secundaria hover:underline">FAQ</a>
+                    <a href="#"
+                        class="text-cor-post text-[15px] block mb-1 hover:text-cor-secundaria hover:underline">Suporte</a>
+                </div>
+            </div>
+
+            <!-- Bloco Contato -->
+            <div class="flex-1 min-w-[180px] p-2 text-left">
+                <h3 class="text-lg mb-4 text-cor-texto-header font-bold">Contato</h3>
+                <hr class="w-[50px] mb-4 border-none h-[2px] bg-cor-secundaria">
+                <div class="flex flex-col gap-1">
+                    <a href="#"
+                        class="text-cor-post text-[15px] block mb-1 hover:text-cor-secundaria hover:underline">Fale
+                        Conosco</a>
+                    <a href="#"
+                        class="text-cor-post text-[15px] block mb-1 hover:text-cor-secundaria hover:underline">Suporte
+                        Técnico</a>
+                    <a href="#"
+                        class="text-cor-post text-[15px] block mb-1 hover:text-cor-secundaria hover:underline">Localização</a>
+                    <a href="#"
+                        class="text-cor-post text-[15px] block mb-1 hover:text-cor-secundaria hover:underline">Horário</a>
+                </div>
+            </div>
+        </section>
+
+        <hr class="w-full h-px border-none my-5 bg-cor-fundo opacity-20">
+
+        <section class="w-[90%] max-w-[1200px] text-center py-2 text-sm text-cor-texto-header">
+            ©2025 - Lorena Rinaldo
+        </section>
     </footer>
+
+    <!-- SCRIPT PARA O DROPDOWN -->
+    <script>
+        function toggleProfileMenu() {
+            const menu = document.getElementById('profileDropdown');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+            } else {
+                menu.classList.add('hidden');
+            }
+        }
+
+        // Fecha o menu ao clicar fora dele
+        window.addEventListener('click', function (e) {
+            const menu = document.getElementById('profileDropdown');
+            const button = document.querySelector('button[onclick="toggleProfileMenu()"]');
+
+            // Verifica se o elemento existe na página antes de tentar fechar
+            if (menu && button) {
+                if (!menu.classList.contains('hidden') && !menu.contains(e.target) && !button.contains(e.target)) {
+                    menu.classList.add('hidden');
+                }
+            }
+        });
+    </script>
 
     {% block scripts %}{% endblock %}
 </body>

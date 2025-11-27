@@ -1,17 +1,27 @@
 {% extends 'base.html' %}
 {% block conteudo %}
-<div class="container-erro">
-    <div class="mensagem-erro">
-        <div>
-            <h1>Página Não Encontrada</h1>
-        </div>
-        <div>
-            <img src="../static/img/erro404.png" alt="">
-        </div>
-    </div>
-    <div class="botao-voltar">
-        <a href="/"><button>Voltar</button></a>
-    </div>
-</div>
+<div
+    class="flex flex-col justify-center items-center h-[80vh] w-full bg-gradient-to-br from-azul-ceu via-azul-lavanda to-azul-purpura p-5">
 
+    <div class="flex flex-col justify-center items-center w-full gap-5 text-center">
+        <div>
+            <h1 class="text-3xl md:text-4xl font-bold text-cor-texto-principal drop-shadow-sm">Página Não Encontrada
+            </h1>
+        </div>
+        <div class="flex justify-center w-full">
+            <img src="{{ url_for('static', filename='img/erro404.png') }}" alt="Erro 404"
+                class="w-[80%] max-w-[400px] h-auto drop-shadow-xl">
+        </div>
+    </div>
+
+    <div class="flex justify-center items-center w-full mt-8">
+        <a href="/" class="no-underline">
+            <button
+                class="bg-[#1e2e81] text-cor-texto-header py-2 px-10 rounded-md border-none cursor-pointer text-lg font-semibold transition-opacity duration-300 hover:opacity-90 shadow-md">
+                Voltar
+            </button>
+        </a>
+    </div>
+
+</div>
 {% endblock %}

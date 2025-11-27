@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+
+<div class="perfil">
+    <div>
+        <img src="../static/uploads/{{foto}}" class="foto">
+        <h2>{{nomeUsuario}}</h2>
+    </div>
+    <div>
+        <h3>Alterar Dados:</h3>
+        <form action="/perfil" method="POST">
+            <label>Nome do Usuário:</label>
+            <input type="text" name="nome" value="{{nomeUsuario}}" required>
+            <label></label>
+            <input type="text" name="user" value="{{user}}" required>
+            <label>Alterar Foto</label>
+            <input type="file" name="foto">
+            <a href="#">
+                <button type="button">Alterar Senha</button>
+            </a>
+            <a href="#">
+                <button type="submit">Salvar Alterações</button>
+            </a>
+        </form>
+    </div>
+</div>
+
+{% block scripts %}{% endblock %}

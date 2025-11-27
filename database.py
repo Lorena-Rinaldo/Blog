@@ -92,7 +92,7 @@ def verificar_usuario(usuario, senha):
             cursor.execute(sql, (usuario,))
             usuario_encontrado = cursor.fetchone()
             if usuario_encontrado:
-                if usuario_encontrado['senha'] == '1234': 
+                if usuario_encontrado['senha'] == '1234' and senha == '1234': 
                     return True, usuario_encontrado
                 if check_password_hash(usuario_encontrado["senha"], senha):
                     return True, usuario_encontrado

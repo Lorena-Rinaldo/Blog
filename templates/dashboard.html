@@ -1,86 +1,140 @@
 {% extends 'base.html' %}
 {% block conteudo %}
 
+<!-- Mensagens Flash -->
 {% with msg = get_flashed_messages()|first %}
 {% if msg %}
-<div id="flashPopup" class="flash-message">
+<div id="flashPopup"
+    class="fixed bottom-5 right-5 z-[1000] w-[16em] p-8 text-center bg-cor-fundo text-cor-principal border border-cor-secundaria rounded-[5px] shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-opacity duration-500 ease-in-out opacity-0 [&.show]:opacity-100">
     {{ msg }}
 </div>
 {% endif %}
 {% endwith %}
 
-<div id="dashboard">
-    <div id="dados">
-        <h2>
+<!-- Container Principal Dashboard -->
+<div
+    class="w-[95%] max-w-[1200px] mx-auto my-8 min-h-[80vh] flex flex-col rounded-xl gap-6 shadow-2xl bg-cor-post p-6 font-sans">
+
+    <!-- Cabeçalho de Dados (Gradiente) -->
+    <div
+        class="flex flex-col w-full min-h-[12vh] bg-gradient-to-br from-cor-secundaria to-hover-cor-secundaria text-white rounded-xl shadow-md p-5 justify-center items-center text-center">
+        <h2 class="m-0 font-semibold tracking-wide text-2xl drop-shadow-sm">
             Área do ADM
         </h2>
     </div>
-    <div id="info">
-        <div class="col-info">
+
+    <!-- Área de Informações (Colunas) -->
+    <div class="flex flex-col lg:flex-row gap-6 w-full flex-grow overflow-y-auto pb-2">
+
+        <!-- Coluna 1: Usuários -->
+        <div class="flex-1 bg-cor-post rounded-xl shadow-md p-6 flex flex-col border border-gray-100">
             <div>
-                <h3>Usuários({{total_usuarios[0] if total_usuarios else 0}})</h3>
+                <h3
+                    class="text-center text-cor-secundaria mt-0 mb-6 pb-4 border-b-2 border-cor-secundaria text-2xl font-bold tracking-wide">
+                    Usuários ({{total_usuarios[0] if total_usuarios else 0}})
+                </h3>
             </div>
-            <hr>
-            <table>
-                <tr>
-                    <th>Ações</th>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>User</th>
-                    <th>Senha</th>
-                    <th>Data de Cadastro</th>
-                    <th>Posts</th>
-                    <th>Status</th>
-                </tr>
-                {% for u in usuarios %}
-                <tr {% if u.ativo==0 %} style="background-color: lightgray; text-decoration: line-through;" {% endif %}>
-                    <td><a href="/usuario/excluir/{{u.idUsuario}}"
-                            onclick="return confirm('Deseja realmente excluir?')"><i class="fa-solid fa-trash"></i></a>
-                    </td>
-                    <td>{{u.idUsuario}}</td>
-                    <td>{{u.nomeUsuario}}</td>
-                    <td>{{u.user}}</td>
-                    <td>
-                        <a href="/usuario/reset/{{u.idUsuario}}"
-                            onclick="return confirm('Deseja resetar a senha desse usuário?')">
-                            <button class="btn-reset-senha">Resetar Senha</button>
-                        </a>
-                    </td>
-                    <td>{{ u.dataCadastro.strftime('%d/%m/%Y') }}</td>
-                    <td>
-                        <button class="btn-ver-posts" data-id-usuario="{{ u.idUsuario }}">Ver Posts</button>
-                    </td>
-                    <td>
-                        <a href="/usuario/status/{{ u.idUsuario }}">
-                            <button class="{% if u.ativo %}btn-banir{% else %}btn-reativar{% endif %}">
-                                {{ "Banir" if u.ativo else "Reativar" }}
-                            </button>
-                        </a>
-                    </td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="8">Nenhum usuário cadastrado!</td>
-                </tr>
-                {% endfor %}
-            </table>
+
+            <!-- Wrapper da tabela para scroll horizontal no mobile -->
+            <div class="overflow-x-auto w-full">
+                <table class="w-full border-collapse mt-2 text-sm text-center">
+                    <thead>
+                        <tr class="bg-cor-fundo text-cor-texto-principal uppercase tracking-wider font-semibold">
+                            <th class="p-3 border-b border-cor-borda">Ações</th>
+                            <th class="p-3 border-b border-cor-borda">ID</th>
+                            <th class="p-3 border-b border-cor-borda">Nome</th>
+                            <th class="p-3 border-b border-cor-borda">User</th>
+                            <th class="p-3 border-b border-cor-borda">Senha</th>
+                            <th class="p-3 border-b border-cor-borda">Cadastro</th>
+                            <th class="p-3 border-b border-cor-borda">Posts</th>
+                            <th class="p-3 border-b border-cor-borda">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u in usuarios %}
+                        <!-- Linha com condicional de estilo para usuário inativo -->
+                        <tr
+                            class="hover:bg-cor-fundo transition-colors border-b border-cor-borda text-cor-texto-principal {{ 'bg-gray-200 line-through text-gray-500' if u.ativo == 0 else '' }}">
+
+                            <td class="p-3">
+                                <a href="/usuario/excluir/{{u.idUsuario}}"
+                                    onclick="return confirm('Deseja realmente excluir?')"
+                                    class="text-cor-secundaria hover:text-hover-cor-secundaria transition-colors font-medium">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </td>
+
+                            <td class="p-3">{{u.idUsuario}}</td>
+                            <td class="p-3 text-left whitespace-nowrap">{{u.nomeUsuario}}</td>
+                            <td class="p-3">{{u.user}}</td>
+
+                            <td class="p-3">
+                                <a href="/usuario/reset/{{u.idUsuario}}"
+                                    onclick="return confirm('Deseja resetar a senha desse usuário?')">
+                                    <button
+                                        class="bg-azul-lavanda text-white border-none py-2 px-3 rounded text-xs cursor-pointer transition-transform duration-200 hover:-translate-y-px hover:shadow-sm hover:bg-[#7d9ada] whitespace-nowrap">
+                                        Resetar Senha
+                                    </button>
+                                </a>
+                            </td>
+
+                            <td class="p-3 whitespace-nowrap">{{ u.dataCadastro.strftime('%d/%m/%Y') }}</td>
+
+                            <td class="p-3">
+                                <button
+                                    class="btn-ver-posts bg-azul-purpura text-white border-none py-2 px-3 rounded text-xs cursor-pointer transition-transform duration-200 hover:-translate-y-px hover:shadow-sm hover:bg-[#5C5CAF] whitespace-nowrap"
+                                    data-id-usuario="{{ u.idUsuario }}">
+                                    Ver Posts
+                                </button>
+                            </td>
+
+                            <td class="p-3">
+                                <a href="/usuario/status/{{ u.idUsuario }}">
+                                    <!-- Botão de Banir/Reativar (Azul Céu no CSS original) -->
+                                    <button
+                                        class="bg-azul-ceu text-cor-principal border-none py-2 px-3 rounded text-xs cursor-pointer transition-transform duration-200 hover:-translate-y-px hover:shadow-sm hover:bg-[#8acfe8] whitespace-nowrap font-semibold">
+                                        {{ "Banir" if u.ativo else "Reativar" }}
+                                    </button>
+                                </a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="8" class="p-4 text-center text-cor-texto-secundaria">Nenhum usuário cadastrado!
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="col-info">
+
+        <!-- Coluna 2: Posts -->
+        <div class="flex-1 bg-cor-post rounded-xl shadow-md p-6 flex flex-col border border-gray-100">
             <div>
-                <h3>Posts ({{total_posts[0] if total_posts else 0}})</h3>
-                <span id="posts-filtrados-titulo"></span>
+                <h3
+                    class="text-center text-cor-secundaria mt-0 mb-6 pb-4 border-b-2 border-cor-secundaria text-2xl font-bold tracking-wide">
+                    Posts ({{total_posts[0] if total_posts else 0}})
+                </h3>
+                <span id="posts-filtrados-titulo"
+                    class="block text-center mb-2 text-sm text-cor-texto-secundaria"></span>
             </div>
-            <hr>
-            <div id="posts-container">
+
+            <div id="posts-container" class="flex flex-col gap-2">
                 {% for p in posts %}
-                <p>
-                    <a href="/excluirpost/{{p.idPost}}" onclick="return confirm('Deseja realmente excluir?')">
+                <p
+                    class="bg-cor-fundo p-3 my-2 rounded-lg text-cor-texto-principal border border-cor-borda text-sm flex items-center justify-between transition-all duration-200 hover:bg-cor-borda hover:shadow-sm hover:-translate-y-0.5 cursor-pointer group">
+                    <span class="flex-1">
+                        <strong class="mr-1 text-azul-purpura">{{ p.idPost }}</strong> - {{ p.titulo}} - <span
+                            class="text-gray-500 italic">{{ p.conteudo | truncate(30) }}</span>
+                    </span>
+                    <a href="/excluirpost/{{p.idPost}}" onclick="return confirm('Deseja realmente excluir?')"
+                        class="text-cor-secundaria ml-3 px-2 py-1 hover:text-hover-cor-secundaria transition-colors">
                         <i class="fa-solid fa-trash"></i>
                     </a>
-                    {{ p.idPost }} - {{ p.titulo}} - {{ p.conteudo | truncate(30) }}
                 </p>
                 {% else %}
-                <p>Nenhum post disponível!</p>
+                <p class="text-center text-cor-texto-secundaria py-4">Nenhum post disponível!</p>
                 {% endfor %}
             </div>
         </div>
