@@ -329,8 +329,8 @@ def novasenha():
     if "idUsuario" not in session:
         return redirect("/")
     if request.method == "POST":
-        senha = request.form["senha"]
-        confirmacao = request.form["confirmacao"]
+        senha = request.form["senha"].strip()
+        confirmacao = request.form["confirmacao"].strip()
 
         if not senha or not confirmacao:
             flash("Preencha Corretamente as Senhas!")

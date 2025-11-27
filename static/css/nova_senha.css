@@ -25,6 +25,10 @@
         width: 100%;
         padding: 40px;
 
+        h3{
+            color: var(--azul-purpura);
+        }
+
         form {
             display: flex;
             flex-direction: column;
@@ -40,29 +44,44 @@
             margin-bottom: -5px;
         }
 
-        .container-senha {
+        .input-wrapper {
             position: relative;
             display: flex;
             width: 100%;
+            align-items: center;
 
             input {
-                padding-right: 40px;
+                width: 100%;
+                padding: 12px 15px;
+                padding-right: 45px;
+                border: 1px solid #ced4da;
+                border-radius: 6px;
+                font-size: 16px;
+                transition: border-color 0.3s;
+
+                &:focus {
+                    border-color: var(--azul-purpura);
+                    outline: none;
+                }
             }
 
-            #togglePassword {
+            button {
                 position: absolute;
-                right: 5px;
-                top: 20%;
+                right: 10px;
+                top: 50%;
                 transform: translateY(-50%);
                 background: none;
                 border: none;
                 cursor: pointer;
                 color: #868e96;
-                padding: 6px;
+                padding: 5px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 font-size: 16px;
                 transition: color 0.2s;
-                line-height: 1;
                 outline: none;
+                z-index: 2;
 
                 &:hover {
                     color: var(--azul-purpura);
@@ -70,41 +89,58 @@
             }
         }
 
-        input {
+        .botoes-acao {
+            display: flex;
+            flex-direction: row;
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ced4da;
-            border-radius: 6px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-
-            &:focus {
-                border-color: var(--azul-purpura);
-                outline: none;
-            }
+            gap: 10px;
+            margin-top: 20px;
         }
 
-        button {
-            margin-top: 15px;
+        .btn-salvar {
+            flex: 2;
             padding: 12px;
             background-color: var(--azul-purpura);
             color: white;
             border: none;
             border-radius: 6px;
-            cursor: pointer;
             font-size: 16px;
             font-weight: 700;
-            transition: background-color 0.3s, transform 0.1s;
-            user-select: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
 
             &:hover {
                 background-color: var(--azul-lavanda);
             }
         }
 
+        .link-cancelar {
+            flex: 1;
+            text-decoration: none;
+            display: flex;
+        }
+
+        .btn-cancelar {
+            width: 100%;
+            padding: 12px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s;
+
+            &:hover {
+                background-color: #5a6268;
+            }
+        }
+
         p {
             font-size: 14px;
             text-align: center;
+            margin-top: 15px;
         }
 
         a {
