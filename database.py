@@ -201,6 +201,20 @@ def reset_senha(idUsuario):
         print(f"Erro de BD! \n Erro: {erro}")
         conexao.rollback()
         return False
+    
+def alterar_senha(senha_hash, idUsuario):
+    try:
+        with conectar() as conexao:
+            cursor = conexao.cursor(dictionary=True)
+            sql = "UPDATE usuario SET senha = %s WHERE idUsuario = %s"
+            print(f"Sql: {sql} - {idUsuario}")
+            cursor.execute(sql, (senha_hash, idUsuario))
+            conexao.commit()
+            return True
+    except mysql.connector.Error as erro:
+        print(f"Erro de BD! \n Erro: {erro}")
+        conexao.rollback()
+        return False
 
 # def buscar_curtidas(idPost):
 #     try:
