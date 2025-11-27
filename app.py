@@ -366,9 +366,11 @@ def perfil():
                 break
             
         return render_template('perfil.html', 
-                               nome=usuario['nome'],
+                               nome=usuario['nomeUsuario'],
                                user=usuario['user'],
-                               foto=usuario['foto'])
+                               foto=usuario['fotoUsuario'])
+    else:
+        flash("Usuário não encontrado")
 
 # @app.rojute('/curtir/<int:idPost>', methods=['POST'])
 # def curtir(idPost):
