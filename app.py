@@ -19,6 +19,9 @@ senha_admin = os.getenv("SENHA_ADMIN")
 app = Flask(__name__)
 app.secret_key = secret_key  # Chave secreta -> quando precisamos passar informações de forma oculta para o navegador, precisamos do secret_key -> usado no login e senha também
 
+# Configuração de pasta de upload
+app.config["UPLOAD_FOLDER"] = "static/uploads"
+
 
 def truncar_conteudo(texto, limite=200):
     # Corta o texto e adiciona '...' se ele exceder o limite.
@@ -188,6 +191,7 @@ def login():
 
             session["idUsuario"] = usuario_encontrado["idUsuario"]
             session["user"] = usuario_encontrado["user"]
+            session["foto"] = usuario_encontrado["fotoUsuario"]
             return redirect("/")
 
         # 3° Nenhum usuário ou ADMIN foram encontrados
@@ -270,7 +274,9 @@ def cadastro():
 
         senha_hash = generate_password_hash(senha)
 
-        resultado, erro = adicionar_usuario(nome, usuario, senha_hash)
+        foto = "placeholder.png"  # Foto padrão de perfil
+
+        resultado, erro = adicionar_usuario(nome, usuario, senha_hash, foto)
 
         if resultado:
             flash("Usuário Cadastrado com Sucesso")
@@ -341,36 +347,77 @@ def novasenha():
         if senha == "1234":
             flash("A nova senha não pode ser igual à senha atual!")
             return render_template("nova_senha.html")
-        
+
         senha_hash = generate_password_hash(senha)
-        idUsuario = session['idUsuario']
+        idUsuario = session["idUsuario"]
         sucesso = alterar_senha(senha_hash, idUsuario)
-        
+
         if sucesso:
-            flash('Senha Alterada com Sucesso!')
-            return redirect('/login')
+            flash("Senha Alterada com Sucesso!")
+            return redirect("/login")
         else:
-            flash('Erro na Atualização de Nova Senha!')
-            return render_template('/nova_senha.html')
-        
-@app.route('/perfil', methods=['GET','POST'])
+            flash("Erro na Atualização de Nova Senha!")
+            return render_template("/nova_senha.html")
+
+
+@app.route("/perfil", methods=["GET", "POST"])
 def perfil():
-    if 'user' not in session:
-        return redirect('/')
-    if request.method == 'GET':
+    if "user" not in session:
+        return redirect("/")
+    if request.method == "GET":
         lista_usuarios = listar_usuarios()
         usuario = None
         for u in lista_usuarios:
-            if u['idUsuario'] == session['idUsuario']:
+            if u["idUsuario"] == session["idUsuario"]:
                 usuario = u
                 break
-            
-        return render_template('perfil.html', 
-                               nome=usuario['nomeUsuario'],
-                               user=usuario['user'],
-                               foto=usuario['fotoUsuario'])
-    else:
-        flash("Usuário não encontrado")
+
+        return render_template(
+            "/perfil.html",
+            nomeUsuario=usuario["nomeUsuario"],
+            user=usuario["user"],
+            foto=usuario["fotoUsuario"],
+        )
+
+    if request.method == "POST":
+        nome = request.form["nome"].strip()
+        user = request.form["user"].strip()
+        foto = request.files["foto"]
+        idUsuario = session["idUsuario"]
+
+        nome_foto = ""
+
+        if not nome or not user:
+            flash("Os campos 'Nome' e 'User' não podem ficar vazios!")
+            return redirect("/perfil")
+        if foto:
+            if foto.filename == "":
+                flash("Arquivo Inválido!!")
+                return redirect("/perfil")
+            extensao = foto.filename.rsplit(".", 1)[-1].lower()
+
+            extensoes_permitidas = ["png", "jpg", "webp"]
+
+            if extensao not in extensoes_permitidas:
+                flash("Extensão inválida")
+                return redirect("/perfil")
+            if len(foto.read()) > 2 * 1024 * 1024:
+                flash("Arquivo acima de 2MB não é aceito!!")
+                return redirect("/perfil")
+
+            foto.seek(0)
+            nome_foto = f"{idUsuario}.{extensao}"
+
+        sucesso = editar_perfil(nome, user, nome_foto, idUsuario)
+
+        if sucesso:
+            if foto:
+                foto.save(f"static/uploads/{nome_foto}")
+            flash("Alterações realizadas com sucesso")
+        else:
+            flash("Erro ao alterar dados!")
+        return redirect("/perfil")
+
 
 # @app.rojute('/curtir/<int:idPost>', methods=['POST'])
 # def curtir(idPost):

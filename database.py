@@ -68,13 +68,13 @@ def listar_usuarios():
         return []  # Lista vazia
 
 
-def adicionar_usuario(nome, user, senha):
+def adicionar_usuario(nome, user, senha, foto):
     try:
         with conectar() as conexao:
             cursor = conexao.cursor()
             # O trecho '(%s, %s, %s)' significa injeção de SQL
-            sql = "INSERT INTO usuario (nomeUsuario,user,senha) VALUES (%s, %s, %s)"
-            cursor.execute(sql, (nome, user, senha))
+            sql = "INSERT INTO usuario (nomeUsuario,user,senha,fotoUsuario) VALUES (%s, %s, %s,%s)"
+            cursor.execute(sql, (nome, user, senha,foto))
             conexao.commit()
             return True, "ok"
     except mysql.connector.Error as erro:
@@ -215,6 +215,23 @@ def alterar_senha(senha_hash, idUsuario):
         print(f"Erro de BD! \n Erro: {erro}")
         conexao.rollback()
         return False
+    
+def editar_perfil(nome, user, nome_foto, idUsuario):
+    try:
+        with conectar() as conexao:
+            cursor = conexao.cursor(dictionary=True)
+            if nome_foto:
+                sql = "UPDATE usuario SET nomeUsuario = %s, user = %s, fotoUsuario = %s WHERE idUsuario = %s"
+                cursor.execute(sql, (nome, user, nome_foto, idUsuario))
+            else:
+                sql = "UPDATE usuario SET nomeUsuario = %s, user = %s WHERE idUsuario = %s"
+            conexao.commit()
+            return True
+    except mysql.connector.Error as erro:
+        print(f"Erro de BD! \n Erro: {erro}")
+        conexao.rollback()
+        return False
+        
 
 # def buscar_curtidas(idPost):
 #     try:

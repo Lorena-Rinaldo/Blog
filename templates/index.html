@@ -31,6 +31,7 @@
                 {% if 'user' in session %}
                 <p class="text-center text-lg font-medium text-cor-texto-principal mb-2">Olá, <span
                         class="font-bold text-azul-purpura">{{session['user']}}</span>! O que deseja postar hoje?</p>
+                <img src="../static/uploads/{{session['foto']}}" alt="foto-usuario">
                 {% endif %}
                 <input type="text" name="titulo" placeholder="Título da Postagem"
                     value="{{ post.titulo if post else '' }}" required
@@ -67,12 +68,13 @@
                 <div class="flex flex-row justify-between items-center p-4 border-b border-cor-borda">
                     <div class="flex flex-row gap-3 items-center">
                         <div class="flex justify-center items-center">
-                            <img src="{{ url_for('static', filename='uploads/foto-user-1.png') }}" alt="Avatar"
+                            <img src="../static/uploads/{{post.fotoUsuario}}" alt="Avatar"
                                 class="h-10 w-10 md:h-12 md:w-12 rounded-full object-cover border border-cor-borda">
                         </div>
                         <div class="p-5 text-cor-texto-principal">
                             <h2 class="text-zl mb:1 md:text-base font-bold text-cor-texto-principal">{{ post.user }}
-                                <span class="font-normal text-cor-texto-secundaria">disse:</span></h2>
+                                <span class="font-normal text-cor-texto-secundaria">disse:</span>
+                            </h2>
                             <p class="text-xs text-cor-texto-secundaria">{{ post.dataPost.strftime('%d/%m/%Y') }}</p>
                         </div>
                     </div>

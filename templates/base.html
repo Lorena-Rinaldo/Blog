@@ -120,6 +120,7 @@
             <nav class="flex gap-4 items-center">
                 {% if 'user' in session or 'admin' in session %}
 
+                <a href="/" class="btn-nav">HOME</a>
                 <!-- Botão Dashboard (Apenas Admin) -->
                 {% if 'admin' in session %}
                 <a href="/dashboard" class="btn-nav">ÁREA ADM</a>
@@ -130,19 +131,30 @@
                     <!-- Imagem clicável (Gatilho) -->
                     <button onclick="toggleProfileMenu()"
                         class="flex items-center focus:outline-none transition-transform active:scale-95">
-                        <img src="{{ url_for('static', filename='uploads/foto-user-1.png') }}" alt="Avatar"
+                        {% if 'user' in session %}
+                        <img src="../static/uploads/{{session['foto']}}" alt="Avatar"
                             class="h-10 w-10 md:h-12 md:w-12 rounded-full object-cover border-2 border-cor-borda hover:border-cor-secundaria transition-colors">
+                        <p class="ml-2">{{session['user']}}</p>
+                        {% endif %}
+                        {% if 'admin' in session %}
+                        <a href="/logout"
+                            class="btn-nav">
+                            <i class="fa-solid fa-right-from-bracket mr-2"></i> Sair
+                        </a>
+                        {% endif %}
                     </button>
 
                     <!-- As Opções (Inicialmente ocultas) -->
                     <div id="profileDropdown"
                         class="hidden absolute right-0 top-14 bg-cor-post border border-cor-borda min-w-[180px] shadow-lg rounded-md z-50 overflow-hidden animate-fade-in-down flex flex-col">
 
+                        {% if 'user' in session %}
                         <!-- Opção: Editar Perfil -->
                         <a href="/perfil"
                             class="block px-4 py-3 text-sm text-cor-texto-principal hover:bg-cor-fundo transition-colors border-b border-cor-borda text-left no-underline">
                             <i class="fa-solid fa-user-pen mr-2 text-azul-purpura"></i> Editar Perfil
                         </a>
+                        {%endif%}
 
                         <!-- Opção: Sair -->
                         <a href="/logout"
