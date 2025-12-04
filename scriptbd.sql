@@ -1,3 +1,5 @@
+DROP DATABASE IF EXISTS blog_lorena;
+
 CREATE DATABASE blog_lorena;
 
 USE blog_lorena;
@@ -17,6 +19,7 @@ CREATE TABLE post(
     titulo VARCHAR(50) NOT NULL,
     conteudo TEXT NOT NULL,
     dataPost TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    curtidas INT DEFAULT 0,
     idUsuario INT,
     FOREIGN KEY (idUsuario) REFERENCES usuario(idUsuario) ON DELETE CASCADE
 );
@@ -45,12 +48,12 @@ FROM
 WHERE
     ativo = 1;
 
--- CREATE TABLE curtida (
---     idCurtida INT PRIMARY KEY AUTO_INCREMENT,
---     idUsuario INT,
---     idPost INT,
---     dataCurtida TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---     FOREIGN KEY (idUsuario) REFERENCES usuario(idUsuario),
---     FOREIGN KEY (idPost) REFERENCES post(idPost)
+-- CREATE TABLE curtidas (
+--     idUsuario INT NOT NULL,
+--     idPost INT NOT NULL,
+--     dataCurtida DATETIME DEFAULT CURRENT_TIMESTAMP,
+--     PRIMARY KEY (idUsuario, idPost),
+--     FOREIGN KEY (idUsuario) REFERENCES usuario(idUsuario) ON DELETE CASCADE,
+--     FOREIGN KEY (idPost) REFERENCES post(idPost) ON DELETE CASCADE
 -- );
 

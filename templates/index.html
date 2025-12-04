@@ -14,9 +14,11 @@
 <!-- Layout Principal -->
 <div class="flex w-full justify-center md:justify-evenly bg-cor-fundo min-h-[80vh]">
 
+    {% if 'user' in session %}
     <!-- Coluna Esquerda -->
     <div class="hidden md:block w-[20%] min-h-[80vh] bg-cor-fundo transition-colors duration-300">
     </div>
+    {% endif %}
 
     <!-- Coluna Central (Feed) -->
     <div
@@ -135,6 +137,7 @@
                 </div>
 
                 <!-- Interação (Curtir/Comentar) -->
+                {% if 'user' in session%}
                 <div class="flex flex-col">
                     <hr class="border-t border-cor-borda w-full m-0">
                     <div class="flex flex-row justify-around items-center py-2 bg-cor-post/50">
@@ -155,6 +158,7 @@
                             <span class="font-medium text-sm">Comentar</span>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
             </div>
             {% endfor %}

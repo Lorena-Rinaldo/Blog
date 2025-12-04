@@ -119,10 +119,11 @@
         <div class="flex flex-row items-center justify-end gap-6 w-1/4 min-w-fit header-direita">
             <nav class="flex gap-4 items-center">
                 {% if 'user' in session or 'admin' in session %}
-
+                {% if request.path != '/' %}
                 <a href="/" class="btn-nav">HOME</a>
+                {% endif %}
                 <!-- Botão Dashboard (Apenas Admin) -->
-                {% if 'admin' in session %}
+                {% if 'admin' in session and request.path == '/' %}
                 <a href="/dashboard" class="btn-nav">ÁREA ADM</a>
                 {% endif %}
 
@@ -137,8 +138,7 @@
                         <p class="ml-2">{{session['user']}}</p>
                         {% endif %}
                         {% if 'admin' in session %}
-                        <a href="/logout"
-                            class="btn-nav">
+                        <a href="/logout" class="btn-nav">
                             <i class="fa-solid fa-right-from-bracket mr-2"></i> Sair
                         </a>
                         {% endif %}
