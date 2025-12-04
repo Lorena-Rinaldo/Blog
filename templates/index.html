@@ -31,7 +31,6 @@
                 {% if 'user' in session %}
                 <p class="text-center text-lg font-medium text-cor-texto-principal mb-2">Olá, <span
                         class="font-bold text-azul-purpura">{{session['user']}}</span>! O que deseja postar hoje?</p>
-                <img src="../static/uploads/{{session['foto']}}" alt="foto-usuario">
                 {% endif %}
                 <input type="text" name="titulo" placeholder="Título da Postagem"
                     value="{{ post.titulo if post else '' }}" required

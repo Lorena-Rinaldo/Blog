@@ -330,10 +330,14 @@ def reset(idUsuario):
 
 
 # Rota para armazenar a nova senha
-@app.route("/usuario/novasenha", methods=["POST"])
+@app.route("/usuario/novasenha", methods=["GET", "POST"])
 def novasenha():
     if "idUsuario" not in session:
         return redirect("/")
+    
+    if request.method == "GET":
+        return render_template("nova_senha.html")
+    
     if request.method == "POST":
         senha = request.form["senha"].strip()
         confirmacao = request.form["confirmacao"].strip()
@@ -345,7 +349,7 @@ def novasenha():
             flash("As Senhas não Correspondem!")
             return render_template("nova_senha.html")
         if senha == "1234":
-            flash("A nova senha não pode ser igual à senha atual!")
+            flash("A nova senha não pode ser igual à '1234'")
             return render_template("nova_senha.html")
 
         senha_hash = generate_password_hash(senha)
@@ -354,6 +358,8 @@ def novasenha():
 
         if sucesso:
             flash("Senha Alterada com Sucesso!")
+            if 'user' in session:
+                return redirect("/perfil")
             return redirect("/login")
         else:
             flash("Erro na Atualização de Nova Senha!")
