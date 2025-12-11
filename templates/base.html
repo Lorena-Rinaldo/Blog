@@ -10,9 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMD/CDQz6ESV6/P79qDydo5YjWkK9p5/T6Bw3t/35p3D6uK1OQ2h8t2a/l3i6GqQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- CORREÇÃO AQUI: Link do Font Awesome limpo (sem integrity para não travar) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <script src="../static/js/flashmessages.js" defer></script>
     <script src="../static/js/postconfig.js" defer></script>
@@ -80,18 +79,16 @@
                 display: none;
             }
         }
-        
+
         @layer components {
-            /* Botão Padrão Desktop */
             .btn-nav {
                 @apply text-cor-texto-header px-4 py-2 border-2 border-cor-texto-header rounded-lg font-semibold transition-all duration-300 hover:bg-cor-texto-header hover:text-cor-principal no-underline text-center whitespace-nowrap;
             }
 
-            /* Botão Menor para Mobile (Barra Superior) */
             .btn-nav-mobile-sm {
                 @apply text-cor-texto-header text-sm font-bold px-3 py-1 border border-cor-texto-header rounded-md transition-all duration-300 hover:bg-cor-texto-header hover:text-cor-principal no-underline;
             }
-            
+
             .card-post {
                 @apply w-[95%] md:w-[90%] min-h-[200px] bg-cor-post rounded-[10px] border-2 border-cor-borda mb-2 transition-colors duration-300 shadow-sm;
             }
@@ -115,85 +112,69 @@
             </a>
         </div>
 
-        <!-- 2. CONTROLES MOBILE (Lado Direito: Botão Entrar + Hambúrguer) -->
+        <!-- 2. CONTROLES MOBILE -->
         <div class="flex items-center gap-3 md:hidden">
-            <!-- Botão ENTRAR (Visível apenas no mobile se NÃO estiver logado) -->
             {% if 'user' not in session and 'admin' not in session %}
             <a href="/login" class="btn-nav-mobile-sm">ENTRAR</a>
             {% endif %}
 
-            <!-- Botão do Menu Hambúrguer -->
             <button id="mobile-menu-btn" class="text-cor-texto-header focus:outline-none text-2xl px-2">
                 <i class="fa-solid fa-bars"></i>
             </button>
         </div>
 
-        <!-- 3. NAV DESKTOP E MENU EXPANSÍVEL MOBILE -->
-        <!-- No mobile: width 100%, hidden por padrão, order-last para cair para a próxima linha -->
-        <!-- No desktop: width auto, flex, items center -->
+        <!-- 3. NAV DESKTOP E MENU MOBILE -->
         <div id="nav-content" class="hidden w-full md:flex md:w-auto md:items-center order-last md:order-none mt-4 md:mt-0">
-            <nav class="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-                
-                <!-- Links Comuns -->
+            <nav class="flex flex-col md:flex-row gap-4 w-full md:w-auto items-start md:items-center">
+
+                <!-- ÁREA DE LINKS -->
                 {% if 'user' in session or 'admin' in session %}
+                    
                     {% if request.path != '/' %}
                     <a href="/" class="btn-nav w-full md:w-auto text-center">HOME</a>
                     {% endif %}
-                    
+
                     {% if 'admin' in session and request.path == '/' %}
                     <a href="/dashboard" class="btn-nav w-full md:w-auto text-center">ÁREA ADM</a>
                     {% endif %}
 
-                    <!-- PERFIL (Desktop e Mobile Logado) -->
-                    <div class="relative w-full md:w-auto flex flex-col md:block items-center">
-                        <!-- Trigger Dropdown Desktop / Lista Mobile -->
-                        <div class="md:hidden w-full flex flex-col gap-2">
-                            <!-- Header Mobile do Usuário -->
-                            <div class="flex items-center justify-center gap-2 py-2 border-b border-gray-700 mb-2">
-                                {% if 'user' in session %}
-                                <img src="../static/uploads/{{session['foto']}}" alt="Avatar" class="h-8 w-8 rounded-full object-cover">
-                                <span class="font-bold">{{session['user']}}</span>
-                                {% endif %}
-                            </div>
-                            <!-- Opções Mobile -->
-                             {% if 'user' in session %}
-                            <a href="/perfil" class="btn-nav w-full text-center">Editar Perfil</a>
-                            {% endif %}
-                            <a href="/logout" class="btn-nav w-full text-center bg-red-600 border-red-600 hover:bg-red-700">Sair</a>
-                        </div>
-
-                        <!-- Dropdown Apenas Desktop -->
-                        <div class="hidden md:block relative">
-                            <button onclick="toggleProfileMenu()" class="flex items-center focus:outline-none transition-transform active:scale-95">
-                                {% if 'user' in session %}
+                    <!-- ÁREA DO PERFIL -->
+                    <div class="relative w-full md:w-auto md:ml-auto mt-2 pt-4 border-t border-white/20 md:border-none md:mt-0 md:pt-0"> 
+                        
+                        <!-- Botão com Foto e Nome -->
+                        <button onclick="toggleProfileMenu()" class="flex items-center gap-3 focus:outline-none w-full md:w-auto px-2 md:px-0 py-2 md:py-0 hover:bg-white/10 md:hover:bg-transparent rounded transition-colors">
+                            {% if 'user' in session %}
                                 <img src="../static/uploads/{{session['foto']}}" alt="Avatar"
-                                    class="h-12 w-12 rounded-full object-cover border-2 border-cor-borda hover:border-cor-secundaria transition-colors">
-                                <p class="ml-2">{{session['user']}}</p>
-                                {% endif %}
-                                {% if 'admin' in session and 'user' not in session %}
-                                 <span class="font-bold mr-2">Admin</span>
-                                {% endif %}
-                            </button>
-                             <!-- Dropdown Menu Desktop -->
-                            <div id="profileDropdown" class="hidden absolute right-0 top-14 bg-cor-post border border-cor-borda min-w-[180px] shadow-lg rounded-md z-50 overflow-hidden animate-fade-in-down flex flex-col">
-                                {% if 'user' in session %}
-                                <a href="/perfil" class="block px-4 py-3 text-sm text-cor-texto-principal hover:bg-cor-fundo transition-colors border-b border-cor-borda text-left no-underline">
-                                    <i class="fa-solid fa-user-pen mr-2 text-azul-purpura"></i> Editar Perfil
-                                </a>
-                                {%endif%}
-                                <a href="/logout" class="block px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors text-left no-underline">
-                                    <i class="fa-solid fa-right-from-bracket mr-2"></i> Sair
-                                </a>
-                            </div>
+                                    class="h-10 w-10 md:h-12 md:w-12 rounded-full object-cover border-2 border-cor-borda hover:border-cor-secundaria transition-colors">
+                                <p class="font-bold text-white text-base">{{session['user']}}</p>
+                            {% endif %}
+
+                            {% if 'admin' in session and 'user' not in session %}
+                                <span class="font-bold mr-2 text-white">Admin</span>
+                            {% endif %}
+
+                            <i class="fa-solid fa-chevron-down text-white/70 text-xs ml-auto md:ml-0"></i>
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div id="profileDropdown" 
+                             class="hidden w-full md:w-[200px] bg-white border border-cor-borda shadow-none md:shadow-lg rounded-md z-[100] overflow-hidden animate-fade-in-down flex flex-col mt-2 md:absolute md:right-0 md:top-14">
+                            
+                            {% if 'user' in session %}
+                            <a href="/perfil" class="flex items-center px-4 py-3 text-sm text-cor-texto-principal hover:bg-gray-100 transition-colors border-b border-cor-borda no-underline">
+                                <i class="fa-solid fa-user-pen mr-3 text-azul-purpura"></i> Editar Perfil
+                            </a>
+                            {% endif %}
+                            
+                            <a href="/logout" class="flex items-center px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors no-underline">
+                                <i class="fa-solid fa-right-from-bracket mr-3"></i> Sair
+                            </a>
                         </div>
                     </div>
 
                 {% else %}
                     <!-- Opções para quem NÃO está logado -->
-                    <!-- Botão Entrar Desktop (No mobile já está no header) -->
                     <a href="/login" class="hidden md:inline-block btn-nav text-center">ENTRAR</a>
-                    
-                    <!-- Botão Cadastro (Desktop e Mobile Menu) -->
                     <a href="/cadastro" class="btn-nav w-full md:w-auto text-center">COMECE AGORA</a>
                 {% endif %}
             </nav>
@@ -226,8 +207,7 @@
                     <i class="fab fa-linkedin-in"></i>
                 </a>
 
-                <a href="#"
-                    class="text-cor-texto-header transition-all duration-300 hover:scale-115 hover:text-[#25D366]">
+                <a href="#" class="text-cor-texto-header transition-all duration-300 hover:scale-115 hover:text-[#25D366]">
                     <i class="fab fa-whatsapp"></i>
                 </a>
 
@@ -247,7 +227,6 @@
 
         <!-- Informações -->
         <section class="flex flex-wrap justify-between w-[90%] max-w-[1200px] mb-8 gap-8 md:gap-5">
-            <!-- Bloco Empresa -->
             <div class="flex-1 min-w-[140px] md:min-w-[180px] p-2 text-center md:text-left">
                 <h3 class="text-lg mb-4 text-cor-texto-header font-bold">Empresa</h3>
                 <hr class="w-[50px] mb-4 border-none h-[2px] bg-cor-secundaria mx-auto md:mx-0">
@@ -258,7 +237,6 @@
                 </div>
             </div>
 
-            <!-- Bloco Produtos -->
             <div class="flex-1 min-w-[140px] md:min-w-[180px] p-2 text-center md:text-left">
                 <h3 class="text-lg mb-4 text-cor-texto-header font-bold">Produtos</h3>
                 <hr class="w-[50px] mb-4 border-none h-[2px] bg-cor-secundaria mx-auto md:mx-0">
@@ -269,7 +247,6 @@
                 </div>
             </div>
 
-            <!-- Bloco Links Úteis -->
             <div class="flex-1 min-w-[140px] md:min-w-[180px] p-2 text-center md:text-left">
                 <h3 class="text-lg mb-4 text-cor-texto-header font-bold">Links Úteis</h3>
                 <hr class="w-[50px] mb-4 border-none h-[2px] bg-cor-secundaria mx-auto md:mx-0">
@@ -281,7 +258,6 @@
                 </div>
             </div>
 
-            <!-- Bloco Contato -->
             <div class="flex-1 min-w-[140px] md:min-w-[180px] p-2 text-center md:text-left">
                 <h3 class="text-lg mb-4 text-cor-texto-header font-bold">Contato</h3>
                 <hr class="w-[50px] mb-4 border-none h-[2px] bg-cor-secundaria mx-auto md:mx-0">
@@ -301,9 +277,8 @@
         </section>
     </footer>
 
-    <!-- SCRIPT PARA O MENU MOBILE E DROPDOWN -->
+    <!-- SCRIPTS -->
     <script>
-        // Função do Toggle de Perfil (Desktop)
         function toggleProfileMenu() {
             const menu = document.getElementById('profileDropdown');
             if (menu.classList.contains('hidden')) {
@@ -313,7 +288,6 @@
             }
         }
 
-        // Lógica do Menu Mobile
         const mobileBtn = document.getElementById('mobile-menu-btn');
         const navContent = document.getElementById('nav-content');
 
@@ -323,9 +297,7 @@
             });
         }
 
-        // Fecha menus ao clicar fora
         window.addEventListener('click', function (e) {
-            // Dropdown Perfil Desktop
             const profileMenu = document.getElementById('profileDropdown');
             const profileBtn = document.querySelector('button[onclick="toggleProfileMenu()"]');
 
@@ -339,5 +311,4 @@
 
     {% block scripts %}{% endblock %}
 </body>
-
 </html>
