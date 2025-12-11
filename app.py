@@ -1,26 +1,23 @@
 from flask import Flask, render_template, request, redirect, flash, session, jsonify
 from database import *
-from dotenv import load_dotenv
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, date
+from config import *
 
 import os
 import mysql.connector
 
-# Carregar esse arquivo para o Python
-load_dotenv()
-
-# Acessar as variáveis
-secret_key = os.getenv("SECRET_KEY")
-usuario_admin = os.getenv("USUARIO_ADMIN")
-senha_admin = os.getenv("SENHA_ADMIN")
+#Acessar as variáveis
+secret_key = SECRET_KEY
+usuario_admin = USUARIO_ADMIN
+senha_admin = SENHA_ADMIN
 
 # Informa o tipo do app
 app = Flask(__name__)
 app.secret_key = secret_key  # Chave secreta -> quando precisamos passar informações de forma oculta para o navegador, precisamos do secret_key -> usado no login e senha também
 
 # Configuração de pasta de upload
-app.config["UPLOAD_FOLDER"] = "static/uploads"
+app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static/uploads')
 
 
 def truncar_conteudo(texto, limite=200):
@@ -418,7 +415,8 @@ def perfil():
 
         if sucesso:
             if foto:
-                foto.save(f"static/uploads/{nome_foto}")
+                caminho_completo = os.path.join(app.config['UPLOAD_FOLDER'], nome_foto)
+                foto.save(caminho_completo)
             flash("Alterações realizadas com sucesso")
         else:
             flash("Erro ao alterar dados!")

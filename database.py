@@ -2,11 +2,16 @@ import mysql.connector
 
 from werkzeug.security import check_password_hash
 
+from config import *
+
 
 # Função para se conectar com o Banco de Dados SQL
 def conectar():
     conexao = mysql.connector.connect(
-        host="localhost", user="root", password="senai", database="blog_lorena"
+        host=HOST,
+        user=USER, 
+        password=PASSWORD, 
+        database=DATABASE
     )
 
     if conexao.is_connected():
