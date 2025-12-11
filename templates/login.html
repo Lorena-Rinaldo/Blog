@@ -4,20 +4,22 @@
 {% with msg = get_flashed_messages()|first %}
 {% if msg %}
 <div id="flashPopup"
-    class="fixed bottom-5 right-5 z-[1000] w-[16em] p-8 text-center bg-cor-fundo text-cor-principal border border-cor-secundaria rounded-[5px] shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-opacity duration-500 ease-in-out opacity-0 [&.show]:opacity-100">
+    class="fixed bottom-5 right-5 z-[1000] w-[90%] md:w-[16em] p-4 md:p-8 text-center bg-cor-fundo text-cor-principal border border-cor-secundaria rounded-[5px] shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-opacity duration-500 ease-in-out opacity-0 [&.show]:opacity-100">
     {{ msg }}
 </div>
 {% endif %}
 {% endwith %}
 
-<div class="flex w-full h-[80vh] justify-center items-center bg-[#f0f2f5]">
+<!-- Container Principal: min-h-[85vh] para garantir altura em mobile -->
+<div class="flex w-full min-h-[85vh] justify-center items-center bg-[#f0f2f5] py-8 px-4">
 
+    <!-- Card Principal: flex-col (mobile) -> flex-row (desktop) -->
     <div
-        class="flex flex-row h-[70%] w-[70%] bg-white rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] overflow-hidden font-sans">
+        class="flex flex-col md:flex-row w-full max-w-[400px] md:max-w-4xl md:h-[600px] bg-white rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] overflow-hidden font-sans">
 
-        <!-- LADO ESQUERDO -->
+        <!-- LADO ESQUERDO (AZUL) - Oculto no mobile (hidden), visível no desktop (md:flex) -->
         <div
-            class="hidden md:flex flex-col w-[55%] bg-gradient-to-br from-azul-purpura via-azul-lavanda to-azul-purpura text-white p-10 justify-start items-center text-center gap-5 relative">
+            class="hidden md:flex flex-col md:w-[55%] bg-gradient-to-br from-azul-purpura via-azul-lavanda to-azul-purpura text-white p-10 justify-start items-center text-center gap-5 relative">
 
             <div class="flex justify-center items-center gap-2">
                 <a href="/"
@@ -38,8 +40,15 @@
             </div>
         </div>
 
-        <!-- LADO DIREITO -->
-        <div class="flex flex-col justify-center items-center w-full md:w-[45%] p-10">
+        <!-- LADO DIREITO (FORMULÁRIO) - Ocupa 100% no mobile -->
+        <div class="flex flex-col justify-center items-center w-full md:w-[45%] p-6 md:p-10 h-full">
+            
+            <!-- Logo visível APENAS no Mobile (md:hidden) para manter a identidade -->
+            <div class="flex md:hidden mb-6 items-center gap-2 text-azul-purpura">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="w-[40px] h-auto">
+                <h1 class="text-xl font-bold text-cor-principal">Foxmood</h1>
+            </div>
+
             <form action="/login" method="POST" class="flex flex-col w-full gap-4 items-center">
 
                 <div class="w-full">
@@ -61,7 +70,7 @@
                     </div>
                 </div>
 
-                <p class="text-sm text-center mt-2 font-medium">
+                <p class="text-sm text-center mt-2 font-medium text-gray-600">
                     Não tem cadastro? <a href="/cadastro"
                         class="text-azul-purpura font-bold hover:text-azul-lavanda transition-colors no-underline">Faça
                         agora</a>
