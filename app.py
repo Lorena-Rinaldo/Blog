@@ -417,6 +417,7 @@ def perfil():
             if foto:
                 caminho_completo = os.path.join(app.config['UPLOAD_FOLDER'], nome_foto)
                 foto.save(caminho_completo)
+                session['foto'] = nome_foto
             flash("Alterações realizadas com sucesso")
         else:
             flash("Erro ao alterar dados!")
@@ -447,3 +448,4 @@ def erro_interno(error):
 #  ---Final do Arquivo---
 if __name__ == "__main__":
     app.run(debug=True)
+
