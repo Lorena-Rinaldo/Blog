@@ -166,9 +166,11 @@
         </div>
     </div>
 
+    {% if 'user' in session%}
     <!-- Coluna Direita -->
     <div class="hidden md:block w-[20%] min-h-[80vh] bg-cor-fundo transition-colors duration-300">
     </div>
+    {% endif %}
 </div>
 
 <script>
