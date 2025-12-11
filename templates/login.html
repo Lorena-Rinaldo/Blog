@@ -10,17 +10,20 @@
 {% endif %}
 {% endwith %}
 
-<!-- Container Principal: min-h-[85vh] para garantir altura em mobile -->
+<!-- Container Principal -->
 <div class="flex w-full min-h-[85vh] justify-center items-center bg-[#f0f2f5] py-8 px-4">
 
-    <!-- Card Principal: flex-col (mobile) -> flex-row (desktop) -->
+    <!-- Card Principal -->
+    <!-- Adicionei min-h-[500px] para não ficar achatado no mobile -->
     <div
-        class="flex flex-col md:flex-row w-full max-w-[400px] md:max-w-4xl md:h-[600px] bg-white rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] overflow-hidden font-sans">
+        class="flex flex-col md:flex-row w-full max-w-[400px] md:max-w-4xl min-h-[500px] md:h-[600px] bg-white rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] overflow-hidden font-sans">
 
-        <!-- LADO ESQUERDO (AZUL) - Oculto no mobile (hidden), visível no desktop (md:flex) -->
+        <!-- LADO ESQUERDO (AZUL) -->
+        <!-- Mudei justify-start para justify-between para espalhar os itens -->
         <div
-            class="hidden md:flex flex-col md:w-[55%] bg-gradient-to-br from-azul-purpura via-azul-lavanda to-azul-purpura text-white p-10 justify-start items-center text-center gap-5 relative">
+            class="hidden md:flex flex-col md:w-[55%] bg-gradient-to-br from-azul-purpura via-azul-lavanda to-azul-purpura text-white p-10 justify-between items-center text-center relative">
 
+            <!-- Topo: Logo -->
             <div class="flex justify-center items-center gap-2">
                 <a href="/"
                     class="flex flex-row items-center justify-center no-underline text-cor-header hover:opacity-90 transition">
@@ -29,27 +32,29 @@
                 </a>
             </div>
 
-            <div class="flex w-full justify-center items-center mt-10">
+            <!-- Meio: Frase (flex-1 faz ele ocupar todo espaço disponivel no meio) -->
+            <div class="flex-1 flex w-full justify-center items-center">
                 <h3 class="text-2xl lg:text-3xl xl:text-4xl font-bold leading-tight max-w-lg">
                     SUA PRÓXIMA GRANDE IDEIA ESPERA POR VOCÊ. FAÇA LOGIN E INSPIRE-SE.
                 </h3>
             </div>
 
-            <div class="flex justify-end items-end mt-auto w-full">
+            <!-- Base: Linha -->
+            <div class="flex justify-end items-end w-full">
                 <hr class="w-full h-px bg-cor-borda border-none opacity-50">
             </div>
         </div>
 
-        <!-- LADO DIREITO (FORMULÁRIO) - Ocupa 100% no mobile -->
-        <div class="flex flex-col justify-center items-center w-full md:w-[45%] p-6 md:p-10 h-full">
+        <!-- LADO DIREITO (FORMULÁRIO) -->
+        <div class="flex flex-col justify-center items-center w-full md:w-[45%] p-6 md:p-10 h-full flex-1">
             
-            <!-- Logo visível APENAS no Mobile (md:hidden) para manter a identidade -->
-            <div class="flex md:hidden mb-6 items-center gap-2 text-azul-purpura">
+            <!-- Logo Mobile -->
+            <div class="flex md:hidden mb-8 items-center gap-2 text-azul-purpura">
                 <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="w-[40px] h-auto">
                 <h1 class="text-xl font-bold text-cor-principal">Foxmood</h1>
             </div>
 
-            <form action="/login" method="POST" class="flex flex-col w-full gap-4 items-center">
+            <form action="/login" method="POST" class="flex flex-col w-full gap-5 items-center">
 
                 <div class="w-full">
                     <label for="user" class="block text-sm font-bold text-[#343a40] mb-1 ml-1">Login:</label>
